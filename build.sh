@@ -1,5 +1,5 @@
 #!/bin/sh
 
-cd ~/askabt/www/js/sdk
+cd client/sdk
 
-uglifyjs2 -m -c -o ../client.js addEvent.js addStyle.js domReady.js getByClass.js jsonml2.js request.js sdk.js
+uglifyjs2 -m -c -o ../client.js addEvent.js addStyle.js domReady.js getByClass.js jsonml2.js ui.js net.js

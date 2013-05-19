@@ -1,10 +1,8 @@
 var archiver = require("./archive.js"),
-	irc = require("irc");
+	irc = require("irc"),
+	config = require("./config.js");
 
-var servers = {
-	"chat.freenode.net": ["node.js", "ubuntu"],
-	"localhost": ["*"]
-}, nick='scrollback';
+var servers = config.irc.servers, nick=config.irc.nick;
 
 
 var chanIndex = {}, i, l, clients = {}, serv, chan;
@@ -30,7 +28,7 @@ function connect(server, nick, callback) {
 	client =  new irc.Client(server, nick, {
 		userName: 'scrollback',
 		realName: 'via scrollback.io'
-		, debug: true
+//		, debug: true
 	});
 	
 	function uh(s) { return s.replace(/^\#*/,''); }

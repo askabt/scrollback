@@ -63,6 +63,7 @@ io.sockets.on('connection', function(socket) {
 		var i;
 		nick = n;
 		for(i in clients) {
+			console.log("Sending NICK message", nick);
 			clients[i].send('NICK', nick);
 		}
 	});

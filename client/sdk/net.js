@@ -11,7 +11,7 @@
  *   - getByClass.js
  *   - jsonml2.js
  */
-var socket = io.connect(location.protocol + "//scrollback.io");
+var socket = io.connect(location.protocol + scrollback.server);
 
 socket.on('message', function(message) {
 	if(message.type == 'join' && message.from == nick) {
@@ -30,7 +30,6 @@ socket.on('error', function(message) {
 
 socket.on('nick', function(n) {
 	console.log("Nick updated to " + n);
-	nick = n;
 	Stream.updateNicks(n)
 });
 
