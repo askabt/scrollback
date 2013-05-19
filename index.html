@@ -30,11 +30,44 @@
 
       </header>
       <section>
-        <p>If your project group wants to collaborate using realtime text chat
+        <div>
+<h2>Table of Contents</h2>
+<div>
+<ul>
+<li><a href="#sec-1">1. Why Scrollback?</a></li>
+<li><a href="#sec-2">2. Quick Start Guide</a></li>
+<li><a href="#sec-3">3. Who made it?</a></li>
+<li><a href="#sec-4">4. How It's Different</a></li>
+<li><a href="#sec-5">5. How It Works</a></li>
+<li><a href="#sec-6">6. How to Use It</a></li>
+<li><a href="#sec-7">7. User Experience</a></li>
+<li><a href="#sec-8">8. Short Descriptions</a></li>
+<li><a href="#sec-9">9. Features</a></li>
+<li><a href="#sec-10">10. User Guide</a></li>
+<li><a href="#sec-11">11. Administrator Guide</a></li>
+<li><a href="#sec-12">12. Developer Guide</a></li>
+<li><a href="#sec-13">13. Pricing, or How We Make Money</a></li>
+<li><a href="#sec-14">14. Support</a></li>
+<li><a href="#sec-15">15. FAQ</a></li>
+</ul>
+</div>
+
+<p></p>
+</div>
+
+<div align="center">
+
+If your community uses text chat
+
 but has outgrown IRC, Skype, or Campfire
+
 then embed a Scrollback chat in your website
+
 and let the conversation flow!
-Go to the Quick Start Guide.</p>
+
+Go to the Quick Start Guide.
+
+</div>
 
 <h1>Why Scrollback?</h1>
 
@@ -571,23 +604,67 @@ Go to the Quick Start Guide.</p>
 
 <p>You can also </p>
 
+<h1>Short Descriptions</h1>
+
+<h2>We are the most frictionless way to create a strong online community. A Scrollback chatroom is a URL away.</h2>
+
+<h2>Angellist</h2>
+
+<p>Scrollback is beautifully designed persistent text chat for open communities. We offer the fastest, easiest way to embed a community chat into any existing website. Think Facebook group chat, but on any website, using a single line of HTML code.</p>
+
+<p>Community text chat is stickier and more engaging than any forum or mailing list.</p>
+
+<p>We know this because over 1 million people use Internet Relay Chat (IRC) every day. But IRC is a legacy system. It was launched in 1988 and predates the web. Just as Facebook killed Friendster, Scrollback is an IRC killer. We update the medium for the modern social web, and where IRC failed to cross the chasm, we will succeed. IRC is mostly used by developers. Scrollback is designed for everyone.</p>
+
+<p>Users can join chatstreams through any web page. They can also use our standalone web interface and our gateways to legacy platforms like Google Talk and IRC itself, offering compatibility and an easy upgrade path to a large installed base.</p>
+
 <h1>Features</h1>
 
-<p>In the following discussion, you are Alice. You are friends with Bob, Charlie, and David.</p>
+<p>Scrollback is designed with the modern web in mind. Features include:</p>
 
-<h2>Embeddable into any Website</h2>
+<ul>
+<li><p>Social media integration make it easy to retweet a useful or funny conversation.</p></li>
+<li><p>Social network integration makes it easy to summon friends into a chat.</p></li>
+<li><p>Web integration simplifies away many of the awkward pain points of IRC.</p></li>
+</ul><h2>Embeddable into any Website</h2>
 
 <p>Paste our embed string into any web page to get a Scrollback portal as a widget in your web page. Users can pop out that portal to enter the full Scrollback UI.</p>
 
-<p>Embeds can target a community or a particular chatstream.</p>
+<h2>Look and Feel integration</h2>
+
+<p>We use Javascript to makes the Scrollback widget look like a seamless part of your website, using your colours, fonts, and styles.</p>
+
+<h2>Fully Webby</h2>
+
+<h3>If you drag a URL into the chat, it gets posted to the chat</h3>
+
+<h2>URL Preview</h2>
+
+<p>When somebody posts a URL, a preview of the page shows up in the right margin.</p>
 
 <h2>Infinite Scrollback</h2>
 
-<p>Every conversation's scrollback is stored forever.</p>
+<p>Every chatstream's scrollback is stored forever and searchable.</p>
+
+<h2>Pin text</h2>
+
+<p>Each chatstream can define certain keywords which, if they are defined in the course of conversation, will cause those utterances to be pinned to the top of the chatstream.</p>
+
+<pre><code>&gt; /add pintext NewbieGuide
+&lt; "NewbieGuide" will be pinned to your chatstream.
+&lt; You have 3 pins remaining.
+
+&gt; NewbieGuide is available at http://example.com/blah/blah
+&lt; before: NewbieGuide needs to be written
+&lt; after:  NewbieGuide is available at http://example.com/blah/blah
+</code></pre>
 
 <h2>Smart URLs</h2>
 
 <p>Every conversation has a URL. Inviting someone to join a thread is as easy as sharing the URL. You can bookmark useful conversations and come back to them weeks or years later.</p>
+
+<pre><code>http://askabt.com/scrollback/868#bacon1
+</code></pre>
 
 <h2>Built-In Nopaste</h2>
 
@@ -596,6 +673,21 @@ Go to the Quick Start Guide.</p>
 <p>Thus is Pastebin built in.</p>
 
 <p>Your text will automatically pin to the left margin so you can discuss it without it disappearing and scrolling off to the top of the screen.</p>
+
+<pre><code>     &gt; Hey guys, can you help me with my code?
+&lt;Guru&gt; Sure, what is ur problem now?
+     &gt; It doesn't work.
+&lt;Guru&gt; Sigh, you'd better show us.
+     &gt; OK here goes.
+     &gt; #include &lt;stdio.h&gt;
+     &gt; int main(void)
+     &gt; {
+     &gt;     printf("Hello world\n');
+     &gt;     return 0;
+     &gt; }
+</code></pre>
+
+<h2>Built-In Document Sharing</h2>
 
 <h2>Intuitive, flexible joins and leaves</h2>
 
@@ -617,11 +709,12 @@ Go to the Quick Start Guide.</p>
 
 <p>Most scrollbars are linear with text. Our smart scrollbar is linear with time – it shows conversations and presence.</p>
 
-<h2>URL Preview</h2>
+<h2>Filters</h2>
 
-<p>When somebody posts a URL, a preview of the page shows up in the right margin.</p>
-
-<h2>Expanding Ripples</h2>
+<ul>
+<li><p>Ignore all guest members.</p></li>
+<li><p>Prioritize messages from your Facebook friends.</p></li>
+</ul><h2>Expanding Ripples</h2>
 
 <p>If you need help, and nobody's around, your questions automatically spread to nearby chatstreams.</p>
 
@@ -629,13 +722,29 @@ Go to the Quick Start Guide.</p>
 
 <p>What is a nearby community? It is a community which belongs to the same categories as the initial community.</p>
 
-<h2>Social Integration</h2>
+<h2>Social Network and Social Media Integration</h2>
 
 <p>Our powerful social features reach beyond text chat to give you integration with Twitter, Facebook, and LinkedIn.</p>
 
+<h3>Easy Tweety</h3>
+
 <p>Did somebody just say something profound? Tweet it.</p>
 
-<p>Did somebody just join the channel? Their Facebook and LinkedIn profiles are only a click away.</p>
+<h3>Instant Dossier</h3>
+
+<p>Did somebody just join the channel? Their Facebook and LinkedIn profiles are only a click away. Hover over their avatar/nickname to see more about them.</p>
+
+<h2>Other Third Party Integrations</h2>
+
+<h3>Evernote Integration</h3>
+
+<p>saves the entire scrollback into an evernote notebook for you. that evernote notebook is updated with daily logs of the chat.</p>
+
+<h3>IFTTT Integration</h3>
+
+<p>Define triggers in your chatstreams that connect to IFTTT for further scriptable actions.</p>
+
+<p>The functionality that has traditionally required a separate IRC Bot can now be configured directly into your chatstreams.</p>
 
 <h2>Multimedia Integration</h2>
 
@@ -669,11 +778,26 @@ Go to the Quick Start Guide.</p>
 
 <h1>User Guide</h1>
 
+<p>This part of the guide helps users get the most out of Scrollback.</p>
+
+<h2>Interfaces</h2>
+
+<p>You probably encountered Scrollback for the first time as an embeddable pop-up chat window in a website somewhere. That chat widget is a window into the universe of Scrollback chats. To explore that universe, click the pop-out button.</p>
+
 <h1>Administrator Guide</h1>
+
+<h2>Chatstream Deletion</h2>
+
+<p>By default, every chatstream is stored forever. Chatstream owners can delete all or part of a chatstream.</p>
 
 <h1>Developer Guide</h1>
 
-<h2>Theory</h2>
+<p>This part of the guide is for developers who want to:</p>
+
+<ul>
+<li><p>embed a Scrollback chatstream in their own websites</p></li>
+<li><p>make API calls against the Scrollback API</p></li>
+</ul><h2>Theory</h2>
 
 <h3>Primitives</h3>
 
@@ -806,7 +930,29 @@ Go to the Quick Start Guide.</p>
 <li><p>one-to-one and one-to-few asynchronous email</p></li>
 <li><p>near-synchronous collaborative editable content (wiki, writely, google docs)</p></li>
 <li><p>democratized one-to-many content sharing (photos, video, text = flickr, youtube, blogs)</p></li>
-</ul><h1>Pricing</h1>
+</ul><h1>Pricing, or How We Make Money</h1>
+
+<p>We're still brainstorming ways to make money. This list is a starting point.</p>
+
+<h2>Anti-abuse Features</h2>
+
+<p>Open communities inevitably attract abuse. Other media have evolved the idea of anti-spam as a paid service. We will do that too.</p>
+
+<h2>Paid Moderation</h2>
+
+<p>A community manager can claim a chatstream by paying to register as a chatstream owner. Administrator privileges follow.</p>
+
+<h2>Hosted Moderation</h2>
+
+<p>Community managers can delegate moderation responsibilities to Scrollback's staff of trained community managers, on a paid basis.</p>
+
+<h2>Private Chats</h2>
+
+<p>All chats are public by default.</p>
+
+<p>If you want to have a private chat to discuss confidential company business, you need to be a paying moderator.</p>
+
+<h2>Up arrow to edit past chats</h2>
 
 <h1>Support</h1>
 
@@ -827,6 +973,8 @@ Go to the Quick Start Guide.</p>
 <a href="http://www.oovoo.com/home.aspx">http://www.oovoo.com/home.aspx</a> (integrates with FB Messenger, but maximum of 12 users per chat)</h3>
 
 <h3>Good Old IRC (a variety of web clients are available, but seriously, just use Scrollback)</h3>
+
+<h3>Barc.com</h3>
 
 <h2>Is Scrollback open-source software?</h2>
 
