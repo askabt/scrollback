@@ -600,8 +600,9 @@ and let the conversation flow!
 
                <script src="http://scrollback.io/socket.io/socket.io.js"></script>
                <script type="text/javascript">
-                                var scrollback = { server: "scrollback.io" };
-                          </script>
+			console.log('here!');
+                        var scrollback = { server: "scrollback.io" };
+               </script>
                <script src="http://scrollback.io/sdk/addEvent.js"></script>
                <script src="http://scrollback.io/sdk/addStyle.js"></script>
                <script src="http://scrollback.io/sdk/domReady.js"></script>
@@ -611,9 +612,9 @@ and let the conversation flow!
                <script src="http://scrollback.io/sdk/net.js"></script>
                <script>
                        socket.on('connect', function(event) {
-                               stream = Stream.get('scrollback');
+                               stream = Stream.get('welcome');
                                stream.select();
-                               socket.emit('join', id);
+                               socket.emit('join', 'welcome');
                                return false;
                        });
                </script>    
