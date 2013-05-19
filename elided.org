@@ -1,0 +1,72 @@
+** Feature Comparison Matrix
+| Comparison     | Async | Scrollback | Hosted | Web       | Mobile Support | Opensource |
+|                |       |            |        | clients   |                |            |
+|                |       |            |        | available |                |            |
+|----------------+-------+------------+--------+-----------+----------------+------------|
+| Bitlbee        |       |            |        |           |                |            |
+| Branch         |       |            |        |           |                |            |
+| Campfire       |       |            |        |           |                |            |
+| Chatterous     |       |            |        |           |                |            |
+| Discourse      |       |            |        |           |                |            |
+| Email (direct) |       |            |        |           |                |            |
+| Email Lists    |       |            |        |           |                |            |
+| Google Wave    |       |            |        |           |                |            |
+| Grove          |       |            |        |           |                |            |
+| HipChat        |       |            |        |           |                |            |
+| IRC            |       |            |        | yes       | iPhone app     |            |
+| Libpurple      |       |            |        |           |                |            |
+| Meetup         |       |            |        |           |                |            |
+| Pidgin         |       |            |        |           |                |            |
+| Quora          |       |            |        |           |                |            |
+| Reddit         |       |            |        |           |                |            |
+| Skype          |       |            |        |           |                |            |
+| Adium          |       |            |        |           |                |            |
+| Trillian       |       |            |        |           |                |            |
+| WeChat         |       |            |        |           |                |            |
+| Yammer         |       |            |        |           |                |            |
+
+Things based on libpurple:
+- Adium :: A user-friendly graphical IM program for OS X.
+- Finch :: A text-based IM program that works well in Linux and other Unixes.
+- Instantbird :: A graphical IM program based on Mozilla's XUL framework.
+- Meebo :: Provides a hosted XMPP IM solution to some large social networks via the Meebo Bar. The XMPP client is based on libpurple.
+- Palm :: Maybe used in the messenger on the Palm Pre?
+- Pidgin :: A user-friendly graphical IM program for Windows, Linux and other Unixes.
+- Spectrum :: Open source XMPP transport/gateway.
+- Telepathy-Haze :: A connection manager for the Telepathy IM framework.
+
+Team collaboration:
+
+|                        | Askabt     | HipChat       | Campfire      | Skype      |
+| Desktop push           | Common app | App available | Not available | Common app |
+| Mobile push            | Common app | App available | Not available | Common app |
+| Embeddable web app     | Yes        | No            | No            | No         |
+| Persistent group chat  | Yes        | Yes           | Yes           | Yes        |
+| Guest access           | Yes        | Yes           | Yes           | No         |
+| HTTP API               | Yes        | Yes           | Yes           | No         |
+| JavaScript API         | Yes        | No            | No            | No         |
+| File transfer          | No         | Yes           | Yes           | Yes        |
+| Screen sharing         | No         | No            | No            | Yes        |
+| Audio/Video conference | No         | Yes           | Yes           | Yes        |
+
+
+|                         | Askabt     | Facebook groups | Google groups | IRC            | Mailing list | Forums |
+| Real-time desktop app   | Common app | No              | No            | Apps available | No           | No     |
+| Real-time Mobile app    | Common app | Common app      | No            | Apps available | No           | No     |
+| Real-time web app       | Yes        | Yes             | No            | Yes            | No           | No     |
+| Chat room affordances   | Yes        | No              | No            | Yes            | No           | No     |
+| Embeddable (web)        | Yes        | No              | Yes           | Yes            | No           | No     |
+| Scrollback, search      | Yes        | Yes             | Yes           | No             | No           | Yes    |
+| Email notifications     | Yes        | Yes             | Yes           | No             | Yes          | Yes    |
+| Easy to set up?         | Easy       | Easy            | Easy          | Hard           | Medium       | Medium |
+| Easy and fun for users? | Easy       | Easy            | Easy          | Hard           | Hard         | Medium |
+| API for reading         | Yes        | Yes             | No            | Yes            | Yes          | No     |
+| API for writing         | Yes        | No              | No            | Yes            | Yes          | No     |
+
+
+
+** How is it different from other 5th generation text chat systems?
+
+*** Discourse
+
+*** Bitlbee
