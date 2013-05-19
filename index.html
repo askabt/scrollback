@@ -987,6 +987,27 @@ Go to the Quick Start Guide.
       </footer>
     </div>
     <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
+
+               <script src="http://scrollback.io/socket.io/socket.io.js"></script>
+               <script type="javascript">
+				 var scrollback = { server: "scrollback.io" };
+			   </script>
+               <script src="http://scrollback.io/sdk/addEvent.js"></script>
+               <script src="http://scrollback.io/sdk/addStyle.js"></script>
+               <script src="http://scrollback.io/sdk/domReady.js"></script>
+               <script src="http://scrollback.io/sdk/getByClass.js"></script>
+               <script src="http://scrollback.io/sdk/jsonml2.js"></script>
+               <script src="http://scrollback.io/sdk/ui.js"></script>
+               <script src="http://scrollback.io/sdk/net.js"></script>
+               <script>
+                       socket.on('connect', function(event) {
+                               stream = Stream.get('scrollback');
+                               stream.select();
+                               socket.emit('join', id);
+                               return false;
+                       });
+               </script>    
 		
   </body>
 </html>
