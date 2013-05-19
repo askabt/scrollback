@@ -1,0 +1,57 @@
+<html>
+	<head>
+		<title>scrollback</title>
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css' />
+		<!-- link href='style.css' rel='stylesheet' type='text/css' / -->
+		
+		<style> html, body, input, button, select, textarea {
+			font-family: "Open Sans", sans-serif;
+			font-weight: 300;
+		} </style>
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	</head>
+	
+	<body>
+		
+		<h1>Scrollback.io</h1>
+		
+		<form id="add">
+			<p>Create or join a chatstream</p>
+			<input id="streamId" />
+			<button type="submit">Add</button>
+		</form>
+		
+		<script src="https://login.persona.org/include.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
+		
+		<!--
+		Using JQuery
+		
+		<script src="http://code.jquery.com/jquery.min.js"></script>
+		<script src="main.js"></script>
+		-->
+		
+		<script src="sdk/addEvent.js"></script>
+		<script src="sdk/addStyle.js"></script>
+		<script src="sdk/domReady.js"></script>
+		<script src="sdk/getByClass.js"></script>
+		<script src="sdk/jsonml2.js"></script>
+		
+		<script src="sdk/ui.js"></script>
+		<script src="sdk/net.js"></script>
+		
+		<script>
+			addEvent($("add"), 'submit', function(event) {
+				if(event.preventDefault) event.preventDefault();
+				
+				id = $("streamId").value;
+				stream = Stream.get(id);
+				stream.select();
+				
+				socket.emit('join', id);
+				return false;
+			});
+		</script>
+		
+	</body>
+</html>

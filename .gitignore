@@ -6,7 +6,9 @@ lib-cov
 *.out
 *.pid
 *.gz
+*.komodoproject
 
+node_modules
 pids
 logs
 results
