@@ -3,7 +3,7 @@ var archiver = require("./archive.js"),
 
 var servers = {
 	"chat.freenode.net": ["node.js", "ubuntu"],
-	"aravind.askabt.com": ["example", "*"]
+	"localhost": ["*"]
 }, nick='scrollback';
 
 
