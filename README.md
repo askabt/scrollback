@@ -1,69 +1,74 @@
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. In Brief</a></li>
+<li><a href="#sec-2">2. How you can use it</a></li>
+<li><a href="#sec-3">3. Quick Start Guide</a></li>
+<li><a href="#sec-4">4. Who made it?</a></li>
+<li><a href="#sec-5">5. How It's Different</a></li>
+<li><a href="#sec-6">6. How It Works</a></li>
+<li><a href="#sec-7">7. How to Use Scrollback</a></li>
+<li><a href="#sec-8">8. User Experience</a></li>
+<li><a href="#sec-9">9. Short Descriptions</a></li>
+<li><a href="#sec-10">10. Features</a></li>
+<li><a href="#sec-11">11. User Guide</a></li>
+<li><a href="#sec-12">12. Administrator Guide</a></li>
+<li><a href="#sec-13">13. Developer Guide</a></li>
+<li><a href="#sec-14">14. Pricing, or How We Make Money</a></li>
+<li><a href="#sec-15">15. Support</a></li>
+<li><a href="#sec-16">16. FAQ</a></li>
+</ul>
+</div>
+</div>
+
 <div align="center">
 
 If your community uses text chat
 but has outgrown IRC, Skype, or Campfire
 then embed a Scrollback chat in your website
 and let the conversation flow!
-Go to the Quick Start Guide.
 
 </div>
 
-<div id="table-of-contents">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">1. Why Scrollback?</a></li>
-<li><a href="#sec-2">2. Quick Start Guide</a></li>
-<li><a href="#sec-3">3. Who made it?</a></li>
-<li><a href="#sec-4">4. How It's Different</a></li>
-<li><a href="#sec-5">5. How It Works</a></li>
-<li><a href="#sec-6">6. How to Use It</a></li>
-<li><a href="#sec-7">7. User Experience</a></li>
-<li><a href="#sec-8">8. Short Descriptions</a></li>
-<li><a href="#sec-9">9. Features</a></li>
-<li><a href="#sec-10">10. User Guide</a></li>
-<li><a href="#sec-11">11. Administrator Guide</a></li>
-<li><a href="#sec-12">12. Developer Guide</a></li>
-<li><a href="#sec-13">13. Pricing, or How We Make Money</a></li>
-<li><a href="#sec-14">14. Support</a></li>
-<li><a href="#sec-15">15. FAQ</a></li>
-</ul>
-</div>
-</div>
+# In Brief
 
-# Why Scrollback?
+Scrollback makes it easy for friends, colleagues, and customers to create community and sustain a sense of belonging on the web and on mobile, using the power of open text chat.
 
-Scrollback enables friends, colleagues, and customers to create and sustain community in the cloud.
+Our UX wizards have reinvented the text chat experience for the 21st century.
 
-As a social text chat platform, Scrollback is **stickier and more engaging** than any forum system and more **sustainable** than commercial chat support.
-
-Social text chat is *different* to IM or friends-only messaging systems, which are usually one-to-one or **private** to small groups.
-
-Communities around opensource technologies, Kickstarter projects, or consumer brands are larger and **open by default**. They need different tools.
-
-What about IRC? IRC is the great grand-daddy of social text chat. But it predates the Web. It predates mobile.
-
-Our UX wizards reinvented the text chat experience, bringing it into the 21st Century.
+The granddaddy of open text chat, IRC, was invented in 1988. It hasn't changed much since.
 
 Scrollback combines all the lessons learned from IRC with the ease-of-use of an embeddable web app and the power of a cloud service.
 
 We added social and anti-abuse features to make it super engaging for users and super convenient for community managers.
 
-Of course it works across platforms and across online media &#x2013; we connect to mobile, to email, to Twitter, to Facebook.
+And of course it works across platforms and across online media &#x2013; we connect to mobile, to email, to Twitter, to Facebook.
+
+# How you can use it
+
+Using Scrollback, you can embed a live *chatstream* into any webpage.
+
+A chatstream can host a long-lived, interactive *community* that's stickier and more engaging than any forum system.
+
+Or it can spawn ad-hoc, disposable threads for short-term collaboration and quick decision-making.
 
 # <a id="Quick-Start-Guide" name="Quick-Start-Guide">Quick Start Guide</a>
 
-A Scrollback web chat is embedded in this web page. It's already live. You're in the Newbie chat by default.
+A Scrollback web chat is embedded in this web page. It's already live. You're in the Welcome chat by default.
 
 Create a new chat by giving it a name. (If it already exists, you'll join it.)
 
-Sign in with Facebook, Github, Google, or LinkedIn.
+Sign in with Facebook or Github. (Soon, Google or LinkedIn too.)
 
 Invite your friends using the **/summon** command.
 
+            > /summon Charlie Smith
+    #Welcome: inviting Charlie Smith from Facebook to join this chat.
+
 Click the pop-out button to give the chat its own browser window.
 
-Now you can bookmark the page, share the URL, and return to that conversation.
+Now you can bookmark the page, share the URL, and return to that conversation anytime.
 
 # Who made it?
 
@@ -71,19 +76,27 @@ We're a team of developers who got tired of IRC.
 
 New chat systems have been appearing for the past 20 years, but none of them achieves the combination of openness and stickiness that IRC does so well.
 
-Paul Graham said of Twitter: "It’s really more of a discovery than an invention; that square was always there in the periodic table of protocols, but no one had quite hit it squarely."
+Paul Graham [once said of Twitter](http://ycombinator.com/rfs3.html): "It’s really more of a discovery than an invention; that square was always there in the periodic table of protocols, but no one had quite hit it squarely."
 
-If IRC is a different square in that table, then Scrollback is in the same column, a few rows down.
+IRC is a different square in that table. Scrollback is in the same column, a few rows down.
 
 We wrote Scrollback primarily to support communities of developers like us.
 
-We expect those developers to share it with their users. The rest is history.
+Being web developers, we naturally put Scrollback into the web projects we built. So we engineered it for the mainstream user, too.
 
 # <a id="How-It-s-Different" name="How-It-s-Different">How It's Different</a>
+
+Open text chat platforms are **stickier and more engaging** than any forum system. Being community-based, they are more **sustainable** than commercial chat support.
 
 ## How is it different from other chat systems?
 
 *For a longer, more academic treatment of chat systems, see Genera of Text Chat.*
+
+Open text chat is *different* to IM or friends-only messaging systems, which are usually one-to-one or **private** to small groups.
+
+Communities around opensource technologies, Kickstarter projects, or consumer brands are larger and **open by default**. They need different tools.
+
+What about IRC? IRC is the great grand-daddy of social text chat. But it predates the Web. It predates mobile.
 
 Most people use text chat for **private**, one-on-one discussion (like SMS text messages) or for small groups of friends (Facebook Chat, WhatsApp, Campfire).
 
@@ -101,581 +114,6 @@ The second challenge is establishing a vibrant sense of community. We've all see
 
 Experience it for yourself &#x2013; jump in to the Quick Start Guide.
 
-## Feature Comparison Matrix
-
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-
-
-<colgroup>
-<col  class="left" />
-
-<col  class="left" />
-
-<col  class="left" />
-
-<col  class="left" />
-
-<col  class="left" />
-
-<col  class="left" />
-
-<col  class="left" />
-</colgroup>
-<thead>
-<tr>
-<th scope="col" class="left">Comparison</th>
-<th scope="col" class="left">Async</th>
-<th scope="col" class="left">Scrollback</th>
-<th scope="col" class="left">Hosted</th>
-<th scope="col" class="left">Web</th>
-<th scope="col" class="left">Mobile Support</th>
-<th scope="col" class="left">Opensource</th>
-</tr>
-
-
-<tr>
-<th scope="col" class="left">&#xa0;</th>
-<th scope="col" class="left">&#xa0;</th>
-<th scope="col" class="left">&#xa0;</th>
-<th scope="col" class="left">&#xa0;</th>
-<th scope="col" class="left">clients</th>
-<th scope="col" class="left">&#xa0;</th>
-<th scope="col" class="left">&#xa0;</th>
-</tr>
-
-
-<tr>
-<th scope="col" class="left">&#xa0;</th>
-<th scope="col" class="left">&#xa0;</th>
-<th scope="col" class="left">&#xa0;</th>
-<th scope="col" class="left">&#xa0;</th>
-<th scope="col" class="left">available</th>
-<th scope="col" class="left">&#xa0;</th>
-<th scope="col" class="left">&#xa0;</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td class="left">Bitlbee</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-</tr>
-
-
-<tr>
-<td class="left">Branch</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-</tr>
-
-
-<tr>
-<td class="left">Campfire</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-</tr>
-
-
-<tr>
-<td class="left">Chatterous</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-</tr>
-
-
-<tr>
-<td class="left">Discourse</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-</tr>
-
-
-<tr>
-<td class="left">Email (direct)</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-</tr>
-
-
-<tr>
-<td class="left">Email Lists</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-</tr>
-
-
-<tr>
-<td class="left">Google Wave</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-</tr>
-
-
-<tr>
-<td class="left">Grove</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-</tr>
-
-
-<tr>
-<td class="left">HipChat</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-</tr>
-
-
-<tr>
-<td class="left">IRC</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">yes</td>
-<td class="left">iPhone app</td>
-<td class="left">&#xa0;</td>
-</tr>
-
-
-<tr>
-<td class="left">Libpurple</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-</tr>
-
-
-<tr>
-<td class="left">Meetup</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-</tr>
-
-
-<tr>
-<td class="left">Pidgin</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-</tr>
-
-
-<tr>
-<td class="left">Quora</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-</tr>
-
-
-<tr>
-<td class="left">Reddit</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-</tr>
-
-
-<tr>
-<td class="left">Skype</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-</tr>
-
-
-<tr>
-<td class="left">Adium</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-</tr>
-
-
-<tr>
-<td class="left">Trillian</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-</tr>
-
-
-<tr>
-<td class="left">WeChat</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-</tr>
-
-
-<tr>
-<td class="left">Yammer</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
-</tr>
-</tbody>
-</table>
-
-Things based on libpurple:
-
--   **Adium:** A user-friendly graphical IM program for OS X.
-
--   **Finch:** A text-based IM program that works well in Linux and other Unixes.
-
--   **Instantbird:** A graphical IM program based on Mozilla's XUL framework.
-
--   **Meebo:** Provides a hosted XMPP IM solution to some large social networks via the Meebo Bar. The XMPP client is based on libpurple.
-
--   **Palm:** Maybe used in the messenger on the Palm Pre?
-
--   **Pidgin:** A user-friendly graphical IM program for Windows, Linux and other Unixes.
-
--   **Spectrum:** Open source XMPP transport/gateway.
-
--   **Telepathy-Haze:** A connection manager for the Telepathy IM framework.
-
-Team collaboration:
-
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-
-
-<colgroup>
-<col  class="left" />
-
-<col  class="left" />
-
-<col  class="left" />
-
-<col  class="left" />
-
-<col  class="left" />
-</colgroup>
-<tbody>
-<tr>
-<td class="left">&#xa0;</td>
-<td class="left">Askabt</td>
-<td class="left">HipChat</td>
-<td class="left">Campfire</td>
-<td class="left">Skype</td>
-</tr>
-
-
-<tr>
-<td class="left">Desktop push</td>
-<td class="left">Common app</td>
-<td class="left">App available</td>
-<td class="left">Not available</td>
-<td class="left">Common app</td>
-</tr>
-
-
-<tr>
-<td class="left">Mobile push</td>
-<td class="left">Common app</td>
-<td class="left">App available</td>
-<td class="left">Not available</td>
-<td class="left">Common app</td>
-</tr>
-
-
-<tr>
-<td class="left">Embeddable web app</td>
-<td class="left">Yes</td>
-<td class="left">No</td>
-<td class="left">No</td>
-<td class="left">No</td>
-</tr>
-
-
-<tr>
-<td class="left">Persistent group chat</td>
-<td class="left">Yes</td>
-<td class="left">Yes</td>
-<td class="left">Yes</td>
-<td class="left">Yes</td>
-</tr>
-
-
-<tr>
-<td class="left">Guest access</td>
-<td class="left">Yes</td>
-<td class="left">Yes</td>
-<td class="left">Yes</td>
-<td class="left">No</td>
-</tr>
-
-
-<tr>
-<td class="left">HTTP API</td>
-<td class="left">Yes</td>
-<td class="left">Yes</td>
-<td class="left">Yes</td>
-<td class="left">No</td>
-</tr>
-
-
-<tr>
-<td class="left">JavaScript API</td>
-<td class="left">Yes</td>
-<td class="left">No</td>
-<td class="left">No</td>
-<td class="left">No</td>
-</tr>
-
-
-<tr>
-<td class="left">File transfer</td>
-<td class="left">No</td>
-<td class="left">Yes</td>
-<td class="left">Yes</td>
-<td class="left">Yes</td>
-</tr>
-
-
-<tr>
-<td class="left">Screen sharing</td>
-<td class="left">No</td>
-<td class="left">No</td>
-<td class="left">No</td>
-<td class="left">Yes</td>
-</tr>
-
-
-<tr>
-<td class="left">Audio/Video conference</td>
-<td class="left">No</td>
-<td class="left">Yes</td>
-<td class="left">Yes</td>
-<td class="left">Yes</td>
-</tr>
-</tbody>
-</table>
-
-
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-
-
-<colgroup>
-<col  class="left" />
-
-<col  class="left" />
-
-<col  class="left" />
-
-<col  class="left" />
-
-<col  class="left" />
-
-<col  class="left" />
-
-<col  class="left" />
-</colgroup>
-<tbody>
-<tr>
-<td class="left">&#xa0;</td>
-<td class="left">Askabt</td>
-<td class="left">Facebook groups</td>
-<td class="left">Google groups</td>
-<td class="left">IRC</td>
-<td class="left">Mailing list</td>
-<td class="left">Forums</td>
-</tr>
-
-
-<tr>
-<td class="left">Real-time desktop app</td>
-<td class="left">Common app</td>
-<td class="left">No</td>
-<td class="left">No</td>
-<td class="left">Apps available</td>
-<td class="left">No</td>
-<td class="left">No</td>
-</tr>
-
-
-<tr>
-<td class="left">Real-time Mobile app</td>
-<td class="left">Common app</td>
-<td class="left">Common app</td>
-<td class="left">No</td>
-<td class="left">Apps available</td>
-<td class="left">No</td>
-<td class="left">No</td>
-</tr>
-
-
-<tr>
-<td class="left">Real-time web app</td>
-<td class="left">Yes</td>
-<td class="left">Yes</td>
-<td class="left">No</td>
-<td class="left">Yes</td>
-<td class="left">No</td>
-<td class="left">No</td>
-</tr>
-
-
-<tr>
-<td class="left">Chat room affordances</td>
-<td class="left">Yes</td>
-<td class="left">No</td>
-<td class="left">No</td>
-<td class="left">Yes</td>
-<td class="left">No</td>
-<td class="left">No</td>
-</tr>
-
-
-<tr>
-<td class="left">Embeddable (web)</td>
-<td class="left">Yes</td>
-<td class="left">No</td>
-<td class="left">Yes</td>
-<td class="left">Yes</td>
-<td class="left">No</td>
-<td class="left">No</td>
-</tr>
-
-
-<tr>
-<td class="left">Scrollback, search</td>
-<td class="left">Yes</td>
-<td class="left">Yes</td>
-<td class="left">Yes</td>
-<td class="left">No</td>
-<td class="left">No</td>
-<td class="left">Yes</td>
-</tr>
-
-
-<tr>
-<td class="left">Email notifications</td>
-<td class="left">Yes</td>
-<td class="left">Yes</td>
-<td class="left">Yes</td>
-<td class="left">No</td>
-<td class="left">Yes</td>
-<td class="left">Yes</td>
-</tr>
-
-
-<tr>
-<td class="left">Easy to set up?</td>
-<td class="left">Easy</td>
-<td class="left">Easy</td>
-<td class="left">Easy</td>
-<td class="left">Hard</td>
-<td class="left">Medium</td>
-<td class="left">Medium</td>
-</tr>
-
-
-<tr>
-<td class="left">Easy and fun for users?</td>
-<td class="left">Easy</td>
-<td class="left">Easy</td>
-<td class="left">Easy</td>
-<td class="left">Hard</td>
-<td class="left">Hard</td>
-<td class="left">Medium</td>
-</tr>
-
-
-<tr>
-<td class="left">API for reading</td>
-<td class="left">Yes</td>
-<td class="left">Yes</td>
-<td class="left">No</td>
-<td class="left">Yes</td>
-<td class="left">Yes</td>
-<td class="left">No</td>
-</tr>
-
-
-<tr>
-<td class="left">API for writing</td>
-<td class="left">Yes</td>
-<td class="left">No</td>
-<td class="left">No</td>
-<td class="left">Yes</td>
-<td class="left">Yes</td>
-<td class="left">No</td>
-</tr>
-</tbody>
-</table>
-
 ## How is it different from IRC?
 
 Scrollback supports scrollback. IRC doesn't. If you're not on the channel when somebody says something, it's gone forever.
@@ -683,12 +121,6 @@ Scrollback supports scrollback. IRC doesn't. If you're not on the channel when s
 Scrollback is easily embeddable into web pages. Just paste a snippet of HTML and you get an interactive Scrollback window into the chatstream of your choice.
 
 Scrollback has a bunch of other useful features.
-
-## How is it different from other 5th generation text chat systems?
-
-### Discourse
-
-### Bitlbee
 
 # How It Works
 
@@ -700,7 +132,39 @@ We also host thousands of nontechnical communities. Brands, sports, close-knit g
 
 Some communities are public. Some are private. Some are in between &#x2013; what we call friends-of-friends.
 
-# How to Use It
+## Problems we Solve
+
+### The tumbleweed problem
+
+Communities require a certain minimum level of traffic to be viable. Below that minimum of responsiveness and activity, a community feels like a ghost town. "Hello? Is anybody around?" That's the tumbleweed problem.
+
+We solve this problem in a number of ways.
+
+1.  Permeable Thread Boundaries
+
+    Scrollback knows exactly how many users on a thread are actively monitoring it and how many are idle or AFK.
+    
+    If a user joins a dormant thread, their questions will, if possible, automatically bubble to any parent, sibling, or child threads which contain more active users.
+
+2.  Scrollback Auto-search
+
+    We borrow a technique from Google Instant and from Quora. When a user asks a question, we automatically search through the history of the current thread and related threads. In that way, the chatstream itself responds to the user.
+
+3.  Configurable Autoresponses
+
+    Members of a chatstream can configure autoresponses to fine-tune Scrollback's behaviour.
+    
+                  > /define problem.*windows = have you tried rebooting?
+                  < autoresponse defined for chatstream #TechHelp.
+        
+           <newbie> Hi, I'm having a problem with my Windows laptop.
+        <#TechHelp> have you tried rebooting?
+
+### Backward Compatibility
+
+If an existing, active IRC community exists, we gateway to it, instead of trying to compete with it.
+
+# How to Use Scrollback
 
 There are two levels.
 
@@ -708,13 +172,15 @@ Scrollback contains thousands of **Communities**.
 
 Each Community contains one or more **Chatstreams**. Think of this as a topic.
 
-Every Community has a Global Chatstream which includes all the members of that community.
+Every Community has a Main Chatstream which includes all the members of that community.
 
 Members have **Conversations** within a Chatstream.
 
 Members join and unjoin a Community.
 
 Members join and unjoin a particular Chatstream.
+
+You can fork a chatstream. Once a chatstream has been forked, we call it a thread.
 
 # User Experience
 
