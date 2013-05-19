@@ -166,27 +166,19 @@ If an existing, active IRC community exists, we gateway to it, instead of trying
 
 # How to Use Scrollback
 
-There are two levels.
+Scrollback contains millions of **Chatstreams**.
 
-Scrollback contains thousands of **Communities**.
+Some Chatstreams exist for mere minutes. For example, if a group of people are dialed in to a conference call, creating a chatstream for that meeting is the fastest, easiest way to get everyone sharing a chat.
 
-Each Community contains one or more **Chatstreams**. Think of this as a topic.
-
-Every Community has a Main Chatstream which includes all the members of that community.
-
-Members have **Conversations** within a Chatstream.
-
-Members join and unjoin a Community.
+Some Chatstreams persist for years. Imagine a community of software developers. They come and go. They fork conversations into special interest groups. But the overall identity of the community remains.
 
 Members join and unjoin a particular Chatstream.
 
-You can fork a chatstream. Once a chatstream has been forked, we call it a thread.
+(future feature) You can fork a chatstream. When we talk about forked chatstreams, we sometimes refer to them as **threads**.
 
 # User Experience
 
-After you participate in a Chatstream, we'll automatically save that Conversation to your Inventory, so you can go back and review any Conversations that you participated in.
-
-You can also 
+After you participate in a Chatstream, we'll automatically save that Conversation to your History, so you can go back and review any Conversations that you participated in.
 
 # Short Descriptions
 
