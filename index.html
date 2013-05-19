@@ -1,32 +1,35 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-
   <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="scrollback.io : Scrollback is beautifully designed text chat for open communities." />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>scrollback.io by askabt</title>
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-
-    <title>scrollback.io</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
   </head>
-
   <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">scrollback.io</h1>
+        <p class="header">Scrollback is beautifully designed text chat for open communities.</p>
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/mengwong">View on GitHub</a>
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/askabt/scrollback/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/askabt/scrollback/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/askabt/scrollback">View On GitHub</a></li>
+        </ul>
 
-          <h1 id="project_title">scrollback.io</h1>
-          <h2 id="project_tagline">Scrollback is beautifully designed text chat for open communities.</h2>
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/askabt">askabt</a></p>
 
-        </header>
-    </div>
 
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
+      </header>
+      <section>
         <p>If your project group wants to collaborate using realtime text chat
 but has outgrown IRC, Skype, or Campfire
 then embed a Scrollback chat in your website
@@ -835,35 +838,11 @@ Go to the Quick Start Guide.</p>
 
 <p>Download.</p>
       </section>
-    </div>
-
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      <footer>
+        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
       </footer>
     </div>
-
-		<script src="http://scrollback.io/socket.io/socket.io.js"></script>
-
-		<script src="http://scrollback.io/sdk/addEvent.js"></script>
-		<script src="http://scrollback.io/sdk/addStyle.js"></script>
-		<script src="http://scrollback.io/sdk/domReady.js"></script>
-		<script src="http://scrollback.io/sdk/getByClass.js"></script>
-		<script src="http://scrollback.io/sdk/jsonml2.js"></script>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
 		
-		<script src="http://scrollback.io/sdk/ui.js"></script>
-		<script src="http://scrollback.io/sdk/net.js"></script>
-		
-		<script>
-			socket.on('connect', function(event) {
-				stream = Stream.get('scrollback');
-				stream.select();
-				
-				socket.emit('join', id);
-				return false;
-			});
-		</script>    
-
   </body>
 </html>
