@@ -70,3 +70,15 @@ Team collaboration:
 *** Discourse
 
 *** Bitlbee
+
+
+** Angellist
+
+Scrollback is beautifully designed persistent text chat for open communities. We offer the fastest, easiest way to embed a community chat into any existing website. Think Facebook group chat, but on any website, using a single line of HTML code.
+
+Community text chat is stickier and more engaging than any forum or mailing list.
+
+We know this because over 1 million people use Internet Relay Chat (IRC) every day. But IRC is a legacy system. It was launched in 1988 and predates the web. Just as Facebook killed Friendster, Scrollback is an IRC killer. We update the medium for the modern social web, and where IRC failed to cross the chasm, we will succeed. IRC is mostly used by developers. Scrollback is designed for everyone.
+
+Users can join chatstreams through any web page. They can also use our standalone web interface and our gateways to legacy platforms like Google Talk and IRC itself, offering compatibility and an easy upgrade path to a large installed base.
+
