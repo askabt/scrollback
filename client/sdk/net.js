@@ -30,7 +30,6 @@ socket.on('error', function(message) {
 
 socket.on('nick', function(n) {
 	console.log("Nick updated to " + n);
-	nick = n;
 	Stream.updateNicks(n)
 });
 

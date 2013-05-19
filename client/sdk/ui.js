@@ -82,6 +82,7 @@ function Stream(id) {
 		console.log("callback", el.className);
 		if(el.className == 'scrollback-log') self.log = el;
 		else if(el.className == 'scrollback-nick') self.nick = el;
+		else if(el.className == 'scrollback-hidebtn') self.hidebtn = el;
 		else if(el.className == 'scrollback-text') self.text = el;
 		return el;
 	});
@@ -98,11 +99,13 @@ Stream.prototype.close = function (){
 Stream.prototype.hide = function() {
 	console.log("hiding");
 	this.stream.className = this.stream.className + " scrollback-stream-hidden";
+	this.hidebtn.innerText = '‾';
 };
 
 Stream.prototype.show = function() {
 	console.log("showing");
 	this.stream.className = this.stream.className.replace(/\sscrollback-stream-hidden/g, '');
+	this.hidebtn.innerText = '_';
 };
 
 Stream.prototype.send = function (){
@@ -119,9 +122,9 @@ Stream.prototype.send = function (){
 };
 
 Stream.prototype.rename = function() {
-	var nick = this.nick.value;
-	socket.emit('nick', nick);
-	Stream.updateNicks(nick);
+	var n = this.nick.value;
+	socket.emit('nick', n);
+	Stream.updateNicks(n);
 };
 
 Stream.prototype.select = function() {
@@ -188,6 +191,7 @@ Stream.updateNicks = function(n) {
 		stream = streams[i];
 		stream.nick.value = n;
 	}
+	nick = n;
 }
 
 Stream.position = function() {
@@ -242,10 +246,14 @@ var css = {
 		},
 		".scrollback-title, .scrollback-toolbar": {
 			"height": "40px", "background": "#ccc",
-			lineHeight: "40px", paddingLeft: "10px"
+			lineHeight: "40px", paddingLeft: "10px",
+			left: "0", right: "0", position: "absolute"
 		},
-			".scrollback-title": {background: "#000", color: "#fff", zIndex: 9997 },
-			".scrollback-toolbar": {background: "#eee" },
+			".scrollback-title": {
+				background: "#000", color: "#fff", zIndex: 9997,
+				top: "0", height: "40px"
+			},
+			".scrollback-toolbar": {background: "#eee", height: "40px", top: "40px" },
 			".scrollback-toolbtn": {
 				float: "left", height: "40px", lineHeight: "40px",
 				width: "40px", cursor: "pointer", textAlign: "center",
