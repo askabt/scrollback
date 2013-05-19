@@ -1,3 +1,13 @@
+<div align="center">
+
+If your community uses text chat
+but has outgrown IRC, Skype, or Campfire
+then embed a Scrollback chat in your website
+and let the conversation flow!
+Go to the Quick Start Guide.
+
+</div>
+
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
@@ -19,19 +29,6 @@
 <li><a href="#sec-15">15. FAQ</a></li>
 </ul>
 </div>
-</div>
-<div align="center">
-
-If your community uses text chat
-
-but has outgrown IRC, Skype, or Campfire
-
-then embed a Scrollback chat in your website
-
-and let the conversation flow!
-
-Go to the Quick Start Guide.
-
 </div>
 
 # Why Scrollback?
