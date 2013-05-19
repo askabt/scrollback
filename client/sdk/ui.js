@@ -244,7 +244,7 @@ var css = {
 			"height": "40px", "background": "#ccc",
 			lineHeight: "40px", paddingLeft: "10px"
 		},
-			".scrollback-title": {background: "#000", color: "#fff" },
+			".scrollback-title": {background: "#000", color: "#fff", zIndex: 9997 },
 			".scrollback-toolbar": {background: "#eee" },
 			".scrollback-toolbtn": {
 				float: "left", height: "40px", lineHeight: "40px",
