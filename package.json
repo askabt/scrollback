@@ -18,8 +18,10 @@
   "dependencies": {
     "irc": "x",
     "express": "3.x",
+    "cookie": "x",
     "socket.io": "x",
-    "mysql": "x"
+    "mysql": "x",
+    "request": "x"
   },
   "author": "Askabt",
   "license": "BSD",

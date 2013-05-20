@@ -21,8 +21,15 @@
 			<button type="submit">Add</button>
 		</form>
 		
-		<script src="https://login.persona.org/include.js"></script>
 		<script src="/socket.io/socket.io.js"></script>
+		
+		<script>
+			var query = {};
+			location.search.substr(1).replace(/([^\=]*)\=([^\&]*)(\&|$)/g, function(m, k, v) {
+				query[k] = decodeURIComponent(v);
+				return "";
+			});
+		</script>
 		
 		<!--
 		Using JQuery
@@ -32,7 +39,10 @@
 		-->
 		
 		<script>
-			var scrollback = { server: location.host };
+			var scrollback = {
+				server: location.host,
+				streams: query.stream? query.stream.split(','): null
+			};
 		</script>
 		
 		<script src="sdk/addEvent.js"></script>
@@ -45,6 +55,7 @@
 		<script src="sdk/net.js"></script>
 		
 		<script>
+			
 			addEvent($("add"), 'submit', function(event) {
 				if(event.preventDefault) event.preventDefault();
 				

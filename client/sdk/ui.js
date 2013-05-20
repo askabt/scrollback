@@ -6,8 +6,17 @@ var streams = {}, nick = null,
 // ---- Initialize ----
 
 DomReady.ready(function() {
+	var i, stream;
+	
 	addStyles(css);
 	addEvent(window, 'resize', Stream.position);
+	
+	if(scrollback.streams && scrollback.streams.length) {
+		for(i=0; i<scrollback.streams.length; i++) {
+			stream = Stream.get(scrollback.streams[i]);
+			stream.hide();
+		}
+	}
 });
 
 // ---- The Stream constructor ----
@@ -48,7 +57,7 @@ function Stream(id) {
 			}, 'M'],
 			["div", {
 				'class': 'scrollback-toolbtn scrollback-embed',
-				onclick: function() { self.embed(); }
+				onclick: function() { self.login(); }
 			}, 'L'],
 			["div", {
 				'class': 'scrollback-toolbtn scrollback-link',
@@ -72,22 +81,23 @@ function Stream(id) {
 			["input", {
 				'class': 'scrollback-nick',
 				onchange: function() { self.rename(); },
-				value: nick
+				value: nick, disabled: true
 			}],
-			["input", {'class': 'scrollback-text'}],
+			["div", {'class': 'scrollback-text-wrap'}, ["input", {
+				'class': 'scrollback-text',
+				value: 'Connecting...', disabled: true
+			}]],
 			["button", {type: 'submit', 'class': 'scrollback-hidden'}, "Send"]
 		]
 	], function(el) {
-		
-		console.log("callback", el.className);
 		if(el.className == 'scrollback-log') self.log = el;
 		else if(el.className == 'scrollback-nick') self.nick = el;
-		else if(el.className == 'scrollback-hidebtn') self.hidebtn = el;
+		else if(el.className == 'scrollback-hide') self.hidebtn = el;
 		else if(el.className == 'scrollback-text') self.text = el;
+		else if(el.className == 'scrollback-send') self.sendfrm = el;
 		return el;
 	});
 	
-	console.log("Appending...", self);
 	document.body.appendChild(self.stream);
 };
 
@@ -97,13 +107,11 @@ Stream.prototype.close = function (){
 };
 
 Stream.prototype.hide = function() {
-	console.log("hiding");
 	this.stream.className = this.stream.className + " scrollback-stream-hidden";
 	this.hidebtn.innerText = '‾';
 };
 
 Stream.prototype.show = function() {
-	console.log("showing");
 	this.stream.className = this.stream.className.replace(/\sscrollback-stream-hidden/g, '');
 	this.hidebtn.innerText = '_';
 };
@@ -136,11 +144,22 @@ Stream.prototype.select = function() {
 	Stream.position();
 };
 
+Stream.prototype.login = function() {
+	var w = window.open('http://' + scrollback.server + '/login.html', 'login',
+		'height=320,width=480,centerscreen');
+}
+
+Stream.prototype.ready = function() {
+	this.nick.disabled = false;
+	this.text.disabled = false;
+	this.text.value = '';
+	console.log(this.id + "  is ready");
+}
+
 // ---- Static methods ----
 
 Stream.message = function(message) {
 	var el, str, bot;
-	console.log('Inserting a message', message);
 	switch(message.type) {
 		case 'text':
 			el = [
@@ -180,7 +199,6 @@ Stream.get = function(id) {
 	if(streams[id]) {
 		return streams[id];
 	} else {
-		console.log("Adding a stream " + id);
 		streams[id] = new Stream(id);
 		Stream.position();
 		return streams[id];
@@ -189,7 +207,6 @@ Stream.get = function(id) {
 
 Stream.updateNicks = function(n) {
 	var i, stream;
-	console.log("Updating all the nicks.");
 	for(i in streams) {
 		stream = streams[i];
 		stream.nick.value = n;
@@ -198,7 +215,6 @@ Stream.updateNicks = function(n) {
 }
 
 Stream.position = function() {
-	console.log("Repositioning streams.");
 	var ss = $$(document, "scrollback-stream"), i, l=ss.length,
 		step = 1, z=0,
 		scrw = window.innerWidth || document.documentElement.clientWidth ||
@@ -274,6 +290,7 @@ var css = {
 	".scrollback-stream-hidden": {
 		"height": "40px !important"
 	},
+		".scrollback-stream-hidden .scrollback-hide": { display: "none" },
 		".scrollback-close, .scrollback-hide": {
 			float: "right", width: "40px",
 			height: "40px", cursor: "pointer", lineHeight: "40px",
@@ -312,15 +329,17 @@ var css = {
 	".scrollback-send": {
 		"position": "absolute", "padding": "0", "margin": "0",
 		"bottom": "0px", "left": "0", "right": "0", "height": "40px",
-		background: "#eee"
+		background: "#eee",
 	},
 		".scrollback-nick, .scrollback-text": {
 			"display": "block", "border": "none",
 			"boxSizing": "border-box", "webkitBoxSizing": "border-box",
 			"mozBoxSizing": "border-box", "msBoxSizing": "border-box",
 			"oBoxSizing": "border-box",
-			lineHeight: "28px", 
-			"padding": "4px", "borderRadius": "0 0 3px 3px",
+			height: "36px", fontSize: "1em"
+		},
+		
+		".scrollback-nick, .scrollback-text-wrap": {
 			"position": "absolute", "top": "2px;",
 			"margin": "0"
 		},
@@ -328,6 +347,7 @@ var css = {
 			outline: "none"
 		},
 		".scrollback-nick": { "left": "2px", "width": "96px", color: "#999" },
-		".scrollback-text": { "right": "2px", "left": "100px" }
+		'.scrollback-text-wrap': { "right": "2px", "left": "100px" },
+		".scrollback-text": { width: "100%" }
 	
 };
