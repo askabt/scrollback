@@ -144,7 +144,10 @@ Stream.message = function(message) {
 	switch(message.type) {
 		case 'text':
 			el = [
-				[ "span", { 'class': 'scrollback-message-nick' }, message.from ],
+				[ "span", {
+					'class': 'scrollback-message-nick',
+					'style': { 'color': hashColor(message.from) }
+				}, message.from ],
 				[ "span", { 'class': 'scrollback-message-separator'}, ': '],
 				[ "span", { 'class': 'scrollback-message-separator'}, message.text ]
 			];
@@ -213,6 +216,38 @@ Stream.position = function() {
 	}
 }
 
+// --- color for names ---
+
+function hashColor(name) {
+	function hash(s) {
+		var h=1, i, l;
+		for (i=0, l=s.length; i<l; i++) {
+			h = (Math.abs(h<<(7+i))+s.charCodeAt(i))%765;
+		}
+		return h;
+	}
+	
+	function color(h) {
+		// h must be between [0, 764] inclusive
+		
+		function hex(n) {
+			var h = n.toString(16);
+			h = h.length==1? "0"+h: h;
+			return h;
+		}
+		
+		function rgb(r, g, b) {
+			return "#" + hex(r) + hex(g) + hex(b);
+		}
+		
+		if(h<255) return rgb(255-h, h, 0);
+		else if(h<510) return rgb(0, 510-h, h-255);
+		else return rgb(h-510, 0, 765-h);
+	}
+	
+	return color(hash(name));
+}
+
 // ---- JsonML Templates ----
 
 
@@ -264,17 +299,16 @@ var css = {
 			"position": "absolute", "top": "80px",
 			"bottom": "40px", "left": "0", "right": "0",
 			"overflowY": "auto", "overflowX": "hidden",
-			"background": "#fff",
+			"background": "#eee",
 		},
-		".scrollback-message": {
-			"overflow": "hidden", padding: "4px",
-			"transition": "all 0.2s ease-out",
-			"webkitTransition": "all 0.2s ease-out", "mozTransition": "all 0.2s ease-out",
-			"oTransition": "all 0.2s ease-out", "msTransition": "all 0.2s ease-out"
-		},
-		".scrollback-message-start": { "height": "0px", },
-		".scrollback-message-join, .scrollback-message-part": { "color": "#999", },
-	
+			".scrollback-message": {
+				"overflow": "hidden", padding: "2px 4px 2px 40px",
+				"transition": "all 0.2s ease-out", textIndent: "-36px",
+				"webkitTransition": "all 0.2s ease-out", "mozTransition": "all 0.2s ease-out",
+				"oTransition": "all 0.2s ease-out", "msTransition": "all 0.2s ease-out"
+			},
+			".scrollback-message-start": { "height": "0px", },
+			".scrollback-message-join, .scrollback-message-part": { "color": "#999", },
 	".scrollback-send": {
 		"position": "absolute", "padding": "0", "margin": "0",
 		"bottom": "0px", "left": "0", "right": "0", "height": "40px",
@@ -285,7 +319,7 @@ var css = {
 			"boxSizing": "border-box", "webkitBoxSizing": "border-box",
 			"mozBoxSizing": "border-box", "msBoxSizing": "border-box",
 			"oBoxSizing": "border-box",
-			lineHeight: "28px", fontSize: "16px",
+			lineHeight: "28px", 
 			"padding": "4px", "borderRadius": "0 0 3px 3px",
 			"position": "absolute", "top": "2px;",
 			"margin": "0"
