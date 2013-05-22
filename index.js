@@ -3,9 +3,10 @@ var irc = require("./irc.js"),
 	app = express(),
 	server = require("http").createServer(app),
 	io = require("socket.io").listen(server),
-	archive = require("./archive.js"),
-	cookie = require("cookie"),
-	user = require("./user.js");
+	archive = require("./archive.js")
+//	, cookie = require("cookie")
+//	, user = require("./user.js")
+	;
 
 app.use(express.logger());
 app.use(express.static(__dirname + '/client'));
@@ -16,11 +17,11 @@ app.get('/:stream', function(req, res) {
 	res.writeHead(302, {Location: "/index.html?stream=" + req.params.stream});
 	res.end();
 });
-app.post('/:login', function(req, res) {
-	user.get(req.body, function(user) {
-		req.session.user = user;
-	});
-});
+//app.post('/:login', function(req, res) {
+//	user.get(req.body, function(user) {
+//		req.session.user = user;
+//	});
+//});
 
 server.listen(7777);
 
@@ -29,10 +30,11 @@ server.listen(7777);
 io.set('log level', 1);
 io.sockets.on('connection', function(socket) {
 	var clients = {},
-		nick = 'guest' + Math.floor(Math.random() * 1000),
-		sid = cookie.parse(socket.handshake.headers.cookie)['connect.sid'];
+		nick = 'guest' + Math.floor(Math.random() * 1000)
+//		, sid = cookie.parse(socket.handshake.headers.cookie)['connect.sid']
+		;
 		
-		console.log("Connection from SID", sid);
+//		console.log("Connection from SID", sid);
 	
 	socket.on('message', function(message) {
 		if(!(client = clients[irc.getServer(message.to)])) {
@@ -58,12 +60,9 @@ io.sockets.on('connection', function(socket) {
 	});
 	
 	socket.on('get', function(qo) {
-		archive.get(qo, function(err, data) {
+		console.log("Getting", qo);
+		archive.get(qo, function(data) {
 			var i, l;
-			if(err) {
-				console.log(err); return;
-			}
-			console.log("Got " + data.length + " messages from archive.");
 			for(i=0, l = data.length; i<l; i++) {
 				socket.emit('message', data[i]);
 			}

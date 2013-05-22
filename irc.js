@@ -31,11 +31,11 @@ function connect(server, nick, callback) {
 //		, debug: true
 	});
 	
-	function uh(s) { return s.replace(/^\#*/,''); }
+	function uh(s) { return s.replace(/^\#*/,'').toLowerCase(); }
 	function message(type, from, to, text) {
 		return {
 			type: type, from: from, to: to, text: text,
-			time: new Date().toISOString()
+			time: new Date().getTime()
 		};
 	}
 	

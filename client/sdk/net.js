@@ -12,6 +12,8 @@
  *   - jsonml2.js
  */
 var socket = io.connect(location.protocol + scrollback.server);
+var timeAdjustment = 0;
+
 
 socket.on('connect', function(message) {
 	if(scrollback.streams && scrollback.streams.length) {
@@ -23,11 +25,15 @@ socket.on('connect', function(message) {
 });
 
 socket.on('message', function(message) {
-	var stream = streams[message.to];
-	if(!stream.connected) stream.ready();
+	var stream;
+//	console.log('Message to ' + message.to, streams);
 	if(message.type == 'join' && message.from == nick) {
-		console.log('Requesting logs for ' + message.to);
-		socket.emit('get', {to: message.to, until: message.time});
+		stream = streams[message.to];
+		if(stream.isReady) return;
+		console.log('Connected. Requesting missing logs for ' + message.to);
+		socket.emit({to: stream.id, until: message.time, since: stream.lastMessageAt});
+		stream.ready();
+		stream.isReady = true;
 	} else {
 		Stream.message(message);
 	}
