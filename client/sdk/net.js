@@ -23,17 +23,18 @@ socket.on('connect', function(message) {
 });
 
 socket.on('message', function(message) {
+	var stream = streams[message.to];
+	if(!stream.connected) stream.ready();
 	if(message.type == 'join' && message.from == nick) {
 		console.log('Requesting logs for ' + message.to);
 		socket.emit('get', {to: message.to, until: message.time});
-		streams[message.to].ready();
 	} else {
 		Stream.message(message);
 	}
 });
 
 socket.on('error', function(message) {
-	alert(message);
+	console.log(message);
 });
 
 socket.on('nick', function(n) {

@@ -93,4 +93,7 @@ io.sockets.on('connection', function(socket) {
 	});
 });
 
-
+process.on('uncaughtException', function(error) {
+	// Keep from crashing. Fix this.
+	console.log("UNCAUGHT EXCEPTION", error);
+});

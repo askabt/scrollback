@@ -88,7 +88,8 @@ function Stream(id) {
 				value: 'Connecting...', disabled: true
 			}]],
 			["button", {type: 'submit', 'class': 'scrollback-hidden'}, "Send"]
-		]
+		],
+		["a", {href: "http://scrollback.io", "class": "scrollback-poweredby", target: "_blank"}]
 	], function(el) {
 		if(el.className == 'scrollback-log') self.log = el;
 		else if(el.className == 'scrollback-nick') self.nick = el;
@@ -98,6 +99,7 @@ function Stream(id) {
 		return el;
 	});
 	
+	self.connected = false;
 	document.body.appendChild(self.stream);
 };
 
@@ -126,7 +128,7 @@ Stream.prototype.send = function (){
 	};
 	socket.emit('message', message);
 	this.text.value = '';
-	Stream.message(message);	
+	Stream.message(message);
 };
 
 Stream.prototype.rename = function() {
@@ -164,8 +166,7 @@ Stream.message = function(message) {
 		case 'text':
 			el = [
 				[ "span", {
-					'class': 'scrollback-message-nick',
-					'style': { 'color': hashColor(message.from) }
+					'class': 'scrollback-message-nick'
 				}, message.from ],
 				[ "span", { 'class': 'scrollback-message-separator'}, ': '],
 				[ "span", { 'class': 'scrollback-message-separator'}, message.text ]
@@ -186,7 +187,8 @@ Stream.message = function(message) {
 	if(!el) return;
 	
 	el = JsonML.parse(["div", {
-		'class': 'scrollback-message scrollback-message-' + message.type
+		'class': 'scrollback-message scrollback-message-' + message.type,
+		'style': { 'borderLeftColor': hashColor(message.from) }
 	}].concat(el));
 	str = Stream.get(message.to);
 	str.log.appendChild(el);
@@ -276,13 +278,13 @@ var css = {
 
 	".scrollback-stream": {
 		"position": "fixed",
-		"width": "360px", "height": "360px", "bottom": "0px",
-		"background": "#fff",
-		"boxShadow": "0px 0px 8px 0 #000",
+		"width": "480px", "height": "480px", "bottom": "0px",
+		"background": "#333", color: "#fff",
+		"boxShadow": "0px 2px 8px 0 rgba(0,0,0,0.5)",
 		"boxSizing": "border-box", "webkitBoxSizing": "border-box",
 		"mozBoxSizing": "border-box", "msBoxSizing": "border-box",
 		"oBoxSizing": "border-box",
-		"fontSize": "16px",
+		"fontSize": "12px", lineHeight: "14px",
 		"transition": "all 0.2s ease-out",
 		"webkitTransition": "all 0.2s ease-out", "mozTransition": "all 0.2s ease-out",
 		"oTransition": "all 0.2s ease-out", "msTransition": "all 0.2s ease-out"
@@ -292,20 +294,27 @@ var css = {
 	},
 		".scrollback-stream-hidden .scrollback-hide": { display: "none" },
 		".scrollback-close, .scrollback-hide": {
-			float: "right", width: "40px",
-			height: "40px", cursor: "pointer", lineHeight: "40px",
+			float: "right", width: "48px",
+			height: "48px", cursor: "pointer", lineHeight: "48px",
 			textAlign: "center", color: "#fff"
 		},
+		".scrollback-close:hover, .scrollback-hide:hover": {
+			background: "#333", fontWeight: "bold"
+		},
 		".scrollback-title, .scrollback-toolbar": {
-			"height": "40px", "background": "#ccc",
-			lineHeight: "40px", paddingLeft: "10px",
-			left: "0", right: "0", position: "absolute"
+			"height": "48px", "background": "#ccc",
+			lineHeight: "48px", paddingLeft: "10px",
+			left: "0", right: "0", position: "absolute",
+			fontWeight: "bold"
 		},
 			".scrollback-title": {
 				background: "#000", color: "#fff", zIndex: 9997,
-				top: "0", height: "40px"
+				top: "0", height: "48px"
 			},
-			".scrollback-toolbar": {background: "#eee", height: "40px", top: "40px" },
+			".scrollback-toolbar": {
+				background: "#eee", height: "40px", top: "40px",
+				display:"none"
+			},
 			".scrollback-toolbtn": {
 				float: "left", height: "40px", lineHeight: "40px",
 				width: "40px", cursor: "pointer", textAlign: "center",
@@ -313,41 +322,48 @@ var css = {
 			},
 			".scrollback-toolbtn:hover": { background: "#fff" },
 		".scrollback-log": {
-			"position": "absolute", "top": "80px",
-			"bottom": "40px", "left": "0", "right": "0",
+			"position": "absolute", "top": "48px",
+			"bottom": "80px", "left": "0", "right": "0",
 			"overflowY": "auto", "overflowX": "hidden",
-			"background": "#eee",
+			"background": "#333", color: "#fff"
 		},
 			".scrollback-message": {
-				"overflow": "hidden", padding: "2px 4px 2px 40px",
-				"transition": "all 0.2s ease-out", textIndent: "-36px",
+				"overflow": "hidden", padding: "2px 4px 2px 48px",
+				"transition": "all 0.2s ease-out", textIndent: "-40px",
 				"webkitTransition": "all 0.2s ease-out", "mozTransition": "all 0.2s ease-out",
-				"oTransition": "all 0.2s ease-out", "msTransition": "all 0.2s ease-out"
+				"oTransition": "all 0.2s ease-out", "msTransition": "all 0.2s ease-out",
+				"borderLeft": "4px solid #eee"
 			},
+			".scrollback-message-nick": { "color": "#ccc" },
 			".scrollback-message-start": { "height": "0px", },
 			".scrollback-message-join, .scrollback-message-part": { "color": "#999", },
 	".scrollback-send": {
 		"position": "absolute", "padding": "0", "margin": "0",
-		"bottom": "0px", "left": "0", "right": "0", "height": "40px",
-		background: "#eee",
+		"bottom": "24px", "left": "0", "right": "0", "height": "48px",
 	},
 		".scrollback-nick, .scrollback-text": {
 			"display": "block", "border": "none",
 			"boxSizing": "border-box", "webkitBoxSizing": "border-box",
 			"mozBoxSizing": "border-box", "msBoxSizing": "border-box",
-			"oBoxSizing": "border-box",
-			height: "36px", fontSize: "1em"
+			"oBoxSizing": "border-box", padding: "0 4px",
+			height: "48px", fontSize: "1em"
 		},
 		
 		".scrollback-nick, .scrollback-text-wrap": {
-			"position": "absolute", "top": "2px;",
+			"position": "absolute", "top": "0px;",
 			"margin": "0"
 		},
 		".scrollback-nick:focus, .scrollback-text:focus": {
 			outline: "none"
 		},
-		".scrollback-nick": { "left": "2px", "width": "96px", color: "#999" },
-		'.scrollback-text-wrap': { "right": "2px", "left": "100px" },
-		".scrollback-text": { width: "100%" }
-	
+		".scrollback-nick": {
+			"left": "8px", "width": "80px", color: "#666",
+			"background": "#ccc"
+		},
+		'.scrollback-text-wrap': { "right": "8px", "left": "88px" },
+		".scrollback-text": { width: "100%", background: "#fff", color: "#000" },
+	".scrollback-poweredby": {
+		position: "absolute", bottom: "4px", right: "8px", height: "16px",
+		width: "121px", background: "url(poweredby.png)"
+	}
 };
