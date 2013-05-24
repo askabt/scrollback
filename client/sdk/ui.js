@@ -106,6 +106,7 @@ function Stream(id) {
 		else if(el.className == 'scrollback-send') self.sendfrm = el;
 		else if(el.className == 'scrollback-tread') self.tread = el;
 		else if(el.className == 'scrollback-thumb') self.thumb = el;
+		else if(el.className == 'scrollback-title') self.title = el;
 		return el;
 	});
 	
@@ -257,6 +258,8 @@ Stream.prototype.renderTimeline = function() {
 Stream.message = function(message) {
 	var el, str, bot;
 	
+	console.log('message', message);
+	
 	function format(text) {
 		// do something more interesting next time.
 		return text;
@@ -286,6 +289,11 @@ Stream.message = function(message) {
 	}
 	
 	str = Stream.get(message.to);
+	
+	if(str.stream.className.indexOf('scrollback-stream-hidden') != -1) {
+		console.log('message received while minimized');
+		str.title.innerHTML = str.id + '>' + message.from + '>' + message.text;
+	}
 
 	if(typeof str.firstMessageAt == 'undefined' ||
 		message.time < str.firstMessageAt) str.firstMessageAt = message.time;
@@ -435,7 +443,7 @@ var css = {
 			background: "#000"
 		},
 		".scrollback-title, .scrollback-toolbar": {
-			"height": "48px",
+			"height": "48px", background: "#333",
 			lineHeight: "48px", paddingLeft: "10px",
 			left: "0px", right: "0px", position: "absolute",
 			fontWeight: "bold"

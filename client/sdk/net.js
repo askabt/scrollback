@@ -31,10 +31,14 @@ socket.on('message', function(message) {
 		stream = streams[message.to];
 		if(stream.isReady) return;
 		console.log('Connected. Requesting missing logs for ' + message.to);
-		socket.emit({to: stream.id, until: message.time, since: stream.lastMessageAt});
+		socket.emit('get', {to: stream.id, until: message.time, since: stream.lastMessageAt});
 		stream.ready();
 		stream.isReady = true;
-	} else {
+	}
+	else if(message.type == 'part' && message.from == nick) {
+		// do nothing.
+	}
+	else {
 		Stream.message(message);
 	}
 });
@@ -45,7 +49,7 @@ socket.on('error', function(message) {
 
 socket.on('nick', function(n) {
 	console.log("Nick updated to " + n);
-	Stream.updateNicks(n)
+	Stream.updateNicks(n);
 });
 
 

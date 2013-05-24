@@ -36,6 +36,10 @@ io.sockets.on('connection', function(socket) {
 		
 //		console.log("Connection from SID", sid);
 	
+	/*
+	 * message: { from: , to: , text: type: time: }
+	 */
+	
 	socket.on('message', function(message) {
 		if(!(client = clients[irc.getServer(message.to)])) {
 			socket.emit('error', message.to + ' is not connected.');
@@ -81,6 +85,14 @@ io.sockets.on('connection', function(socket) {
 	
 	socket.on('login', function() {
 		
+	});
+	
+	socket.on('part', function(id) {
+		var client;
+		console.log("Parting", id);
+		if((client = clients[irc.getServer(id)])) {
+			client.part("#" + id);
+		}
 	});
 	
 	socket.on('disconnect', function() {

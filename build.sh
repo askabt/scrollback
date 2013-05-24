@@ -2,4 +2,14 @@
 
 cd client/sdk
 
-uglifyjs2 -m -c -o ../client.js addEvent.js addStyle.js domReady.js getByClass.js jsonml2.js ui.js net.js
+echo "(function(){" > ../client.js
+
+cat ../../
+
+cat addEvent.js addStyle.js domReady.js getByClass.js jsonml2.js polyfill.js ui.js net.js >> ../client.js
+
+echo "}())" >> ../client.js
+
+# cd ../
+
+# uglifyjs2 -m -c -o ../client.min.js client.js
