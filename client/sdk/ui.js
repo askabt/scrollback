@@ -264,8 +264,6 @@ Stream.prototype.renderTimeline = function() {
 Stream.message = function(message) {
 	var el, str, bot, hidden, i, j;
 	
-	console.log('message', message);
-	
 	function format(text) {
 		// do something more interesting next time.
 		return text;
@@ -319,7 +317,6 @@ Stream.message = function(message) {
 	
 	
 	if(str.stream.className.indexOf('scrollback-stream-hidden') != -1) {
-		console.log('message received while minimized');
 		str.titleText.innerText = ' ▸ ' + message.from + ' • ' + message.text;
 	}
 
