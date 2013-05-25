@@ -36,7 +36,12 @@ function Stream(id) {
 		["div", {
 			'class': 'scrollback-title',
 			onclick: function() { self.show(); }
-		}, id,
+		},
+			id,
+			["span", {
+				'class': 'scrollback-title-text',
+				onclick: function() { self.show(); }
+			}],
 			["div", {
 				'class': 'scrollback-close',
 				onclick: function() { self.close(); }
@@ -107,6 +112,7 @@ function Stream(id) {
 		else if(el.className == 'scrollback-tread') self.tread = el;
 		else if(el.className == 'scrollback-thumb') self.thumb = el;
 		else if(el.className == 'scrollback-title') self.title = el;
+		else if(el.className == 'scrollback-title-text') self.titleText = el;
 		return el;
 	});
 	
@@ -127,6 +133,7 @@ Stream.prototype.hide = function() {
 
 Stream.prototype.show = function() {
 	this.stream.className = this.stream.className.replace(/\sscrollback-stream-hidden/g, '');
+	this.titleText.innerText='';
 	this.hidebtn.innerText = '_';
 };
 
@@ -161,8 +168,7 @@ Stream.prototype.select = function() {
 Stream.prototype.login = function() {
 	var w = window.open('http://' + scrollback.server + '/login.html', 'login',
 		'height=320,width=480,centerscreen');
-};
-
+}
 Stream.prototype.ready = function() {
 	this.nick.disabled = false;
 	this.text.disabled = false;
@@ -179,7 +185,7 @@ Stream.prototype.scroll = function() {
 		up = log.scrollTop < this.lastScrollTop;
 		if(log.scrollTop < log.clientHeight && up) {
 			this.lastRequestedUntil = until;
-			socket.emit('get', {to: this.id, until: until});
+			socket.emit('get', {to: this.id, until: until, type: "text"});
 		}
 	}
 	
@@ -256,7 +262,7 @@ Stream.prototype.renderTimeline = function() {
 // ---- Static methods ----
 
 Stream.message = function(message) {
-	var el, str, bot;
+	var el, str, bot, hidden, i, j;
 	
 	console.log('message', message);
 	
@@ -264,7 +270,8 @@ Stream.message = function(message) {
 		// do something more interesting next time.
 		return text;
 	}
-	
+
+	str = Stream.get(message.to);	
 	switch(message.type) {
 		case 'text':
 			message.text = format(message.text);
@@ -272,27 +279,48 @@ Stream.message = function(message) {
 				[ "span", {
 					'class': 'scrollback-message-nick'
 				}, message.from ],
-				[ "span", { 'class': 'scrollback-message-separator'}, ': '],
+				[ "span", { 'class': 'scrollback-message-separator'}, ' • '],
 				[ "span", { 'class': 'scrollback-message-text'}, message.text ]
 			];
 			break;
 		case 'join':
-			// el = [["span", message.from + ' joined.']];
-			break;
+			// var notice=str.notice.innerHTML;
+			// var notices=notice.split(",");
+			// if(typeof str.noticeTimeout !=="undefined")
+			// 	clearTimeout(str.noticeTimeout);
+			// if(notices.length==3){
+			// 	notice=notices[1]+","+notices[2];
+			// }
+			// str.notice.innerHTML=notice+","+message.from+((message.type==="join")?" joined":" left");
+			// str.notice.className=str.notice.className.replace(" scrollback-hidden","");
+
+			// str.noticeTimeout=setTimeout(function(){
+			// 	console.log("timeout called.");
+			// 	str.notice.innerHTML="";
+			// 	str.notice.className=str.notice.className+" scrollback-hidden";
+			// },1000);
+			el = [["span", message.from + ' joined.']];
+
+			// fall through.
 		case 'part':
-			/* el = [["span", message.from + ' left' + (
+			el = el || [["span", message.from + ' left' + (
 				message.text? ' (' + message.text + ')': '.'
-			)]];*/
+			)]];
+
+			setTimeout(function(){
+				el.className += ' scrollback-message-hidden';
+			}, 1000);
+
 			break;
 		default:
 			el = [["span", message.text]];
 	}
 	
-	str = Stream.get(message.to);
+	
 	
 	if(str.stream.className.indexOf('scrollback-stream-hidden') != -1) {
 		console.log('message received while minimized');
-		str.title.innerHTML = str.id + '>' + message.from + '>' + message.text;
+		str.titleText.innerHTML = ' ▸ ' + message.from + ' • ' + message.text;
 	}
 
 	if(typeof str.firstMessageAt == 'undefined' ||
@@ -315,6 +343,11 @@ Stream.message = function(message) {
 		bot = bot.previousSibling;
 	}
 	str.log.insertBefore(el, bot && (bot.previousSibling? bot.nextSibling: bot));
+
+	hidden = $$(str.log, "scrollback-message-hidden");
+	for(i=0, l=hidden.length; i<l; i++) {
+		str.log.removeChild(hidden[i]);
+	}
 	
 	if(!str.scrolledUp) {
 		str.log.scrollTop = str.log.scrollHeight;
@@ -337,7 +370,7 @@ Stream.get = function(id) {
 		streams[id] = new Stream(id);
 		Stream.position();
 		streams[id].lastRequestedUntil = new Date().getTime();
-		socket.emit('get', { to: id, until: new Date().getTime() });
+		socket.emit('get', { to: id, until: new Date().getTime(), type: 'text' });
 		return streams[id];
 	}
 };
@@ -452,6 +485,9 @@ var css = {
 				color: "#fff", zIndex: 9997,
 				top: "0", height: "48px"
 			},
+				".scrollback-title-text":{
+					fontWeight: "normal", color: "#999"
+				},
 			".scrollback-toolbar": {
 				background: "#eee", height: "40px", top: "40px",
 				display:"none"
@@ -476,11 +512,17 @@ var css = {
 				"transition": "all 0.2s ease-out", textIndent: "-32px",
 				"webkitTransition": "all 0.2s ease-out", "mozTransition": "all 0.2s ease-out",
 				"oTransition": "all 0.2s ease-out", "msTransition": "all 0.2s ease-out",
-				"borderLeft": "4px solid #eee"
+				"borderLeft": "4px solid #eee", opacity: 1, height: "auto"
 			},
-			".scrollback-message-nick": { "color": "#ccc" },
-			".scrollback-message-start": { "height": "0px", },
-			".scrollback-message-join, .scrollback-message-part": { "color": "#999", },
+			".scrollback-message-hidden": {
+				"opacity": 0,
+				"transition": "all 2s ease-out",
+				"webkitTransition": "all 2s ease-out", "mozTransition": "all 2s ease-out",
+				"oTransition": "all 2s ease-out", "msTransition": "all 2s ease-out",
+			},
+			".scrollback-message-nick": { "color": "#999" },
+			".scrollback-message-separator": { "color": "#666", },
+			".scrollback-message-join, .scrollback-message-part": { "color": "#666", },
 	".scrollback-timeline": {
 		background: "#333", position: "absolute", top: "48px", right: "0", width: "18px",
 		bottom: "80px", zIndex: 9996
@@ -506,9 +548,9 @@ var css = {
 			"oBoxSizing": "border-box", padding: "0 4px",
 			height: "48px", fontSize: "1em"
 		},
-		
+
 		".scrollback-nick, .scrollback-text-wrap": {
-			"position": "absolute", "top": "0px;",
+			"position": "absolute", "top": "0",
 			"margin": "0"
 		},
 		".scrollback-nick:focus, .scrollback-text:focus": {
