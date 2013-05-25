@@ -31,7 +31,7 @@ socket.on('message', function(message) {
 		stream = streams[message.to];
 		if(stream.isReady) return;
 		console.log('Connected. Requesting missing logs for ' + message.to);
-		socket.emit('get', {to: stream.id, until: message.time, since: stream.lastMessageAt, type: "text"});
+		socket.emit('get', {to: stream.id, until: message.time, since: stream.lastMessageAt, type: 'text'});
 		stream.ready();
 		stream.isReady = true;
 	}

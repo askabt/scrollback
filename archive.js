@@ -60,8 +60,8 @@ exports.get = function(options, callback) {
 			console.log(err); return;
 		}
 		console.log("RESULTS:", data.length);
-		if(data.length < 256) {
-			data.unshift({
+		if(limit && data.length < limit) {
+			(desc? data.unshift: data.push)({
 				type: "notice", from: '', to: options.to || '',
 				text: 'There are no more messages', time: 0
 			});

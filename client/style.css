@@ -63,3 +63,129 @@ h1, h2, h3, h4, h5, h6 { font-weight: 300; }
 		-o-box-sizing: border-box; padding: 4px 20px; border-radius: 0 0 3px 3px;
 		position: absolute; right: -9999px; box-shadow: 0 0 8px 0 #000; 
 	}
+
+
+
+nav {
+    background: #666; line-height: 48px; color: #fff;
+    overflow: visible;
+}
+    .logo-box { height: 48px; overflow: visible; }
+
+    nav ul {
+        display: block; list-style: none; text-align: right; margin: 0; padding: 0;
+    }
+        nav li { display: inline; padding: 0 16px; }
+            nav li a { display: inline-block; text-decoration: none; color: #fff; z-index: 2; line-height: 48px; }
+    nav .logo {
+        position: absolute; top:0; left: 48px;
+        z-index: 1;
+    }
+
+header {
+    background: #fff url('../img/cover2.png') no-repeat top right;
+    height: 400px;
+}
+    header h1, header h2, header p {
+        margin: 0 0 0 -20px; padding: 0 20px 1em 20px;
+        background: rgba(255,255,255,0.9);
+    }
+    header h1 { padding-top: 64px; font-weight: 300; }
+    header h2 { font-weight: 900; }
+
+footer {
+    background: #eee; color: #666; font-size: 75%;
+    padding: 24px 0;
+}
+    footer a { color: #666; text-decoration: none; }
+
+a.btn { display: inline-block; }
+
+button { border: none; }
+
+a.btn, button {
+    background: #f30; color: #fff; border-radius: 2px;
+    font-weight: 900; text-decoration: none;
+    box-shadow: 0 2px 8px 0 rgba(0,0,0,0.5);
+    text-shadow: 0 -1px 1px rgba(0,0,0,0.5);
+    padding: 24px; 
+}
+
+aside {  }
+
+p.illustrated { padding: 0 144px 0 16px; color: #666; }
+p.illustrated img { float: right; margin-right: -144px; }
+span.quote { font-style: italic; color: #000; }
+span.quote:before { content: "“"; }
+span.quote:after { content: "”"; }
+
+ul.grid { list-style: none; padding: 0; margin: 0; }
+    ul.grid li {
+        display: block; width: 128px; height: 64px; margin: 16px; float: left;
+        -moz-box-sizing: border-box; -webkit-box-sizing: border-box;
+        -ms-box-sizing: border-box; -o-box-sizing: border-box;
+        box-sizing: border-box;
+        padding: 10px; background: #eee;
+    }
+    ul.grid a { text-decoration: none; color: #000; }
+
+.tier {
+    border: 16px solid #fff; padding: 64px 16px !important;
+    text-align: center;
+    border-radius: 18px;
+}
+
+.tier button { background: #000; }
+.plat-tier { background: #f7f7f7; }
+.gold-tier { background: #fc0; }
+.silv-tier { background: #eee; color: #000; }
+    .price { font-size: 4em; margin-bottom: -0.2em; }
+    .perweek, .limit { font-weight: 300; }
+    .limit { margin: 1em 0; }
+    .tiername { font-size: 75%; text-transform: uppercase; }
+
+.container {
+    max-width: 960px; width: 100%; margin: 0 auto; position: relative;
+    clear: both; padding: 0 24px;
+    -moz-box-sizing: border-box; -webkit-box-sizing: border-box;
+    -ms-box-sizing: border-box; -o-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.box {
+    -moz-box-sizing: border-box; -webkit-box-sizing: border-box;
+    -ms-box-sizing: border-box; -o-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 0 16px;
+    float: left;
+}
+
+.span12 { width: 100%; }
+.span11 { width:  91.6667%; }
+.span10 { width:  83.3333%; }
+.span9  { width:  75%; }
+.span8  { width:  66.6667%; }
+.span7  { width:  58.3333%; }
+.span6  { width:  50%; }
+.span5  { width:  41.6667%; }
+.span4  { width:  33.3333%; }
+.span3  { width:  25%; }
+.span2  { width:  16.6667%; }
+.span1  { width:   8.3333%; }
+
+.break  { clear: both; }
+
+@media only screen and (max-width: 640px) {
+    .span12 { width: 100%; }
+    .span11 { width: 100%; }
+    .span10 { width: 100%; }
+    .span9  { width: 100%; }
+    .span8  { width: 100%; }
+    .span7  { width: 100%; }
+    .span6  { width: 100%; }
+    .span5 { width:  83.3333%; }
+    .span4  { width:  66.6667%; }
+    .span3  { width:  50%; }
+    .span2  { width:  33.3333%; }
+    .span1  { width:  16.6667%; }
+}
+
