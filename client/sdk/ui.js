@@ -311,7 +311,10 @@ Stream.message = function(message) {
 		'data-time': message.time
 	}].concat(el));
 	bot = str.log.lastChild;
-	while(bot && bot.getAttribute('data-time') > message.time && bot.previousSibling) {
+
+	// rearranges messages estimating time to type them
+	var estimatedTime = Math.min(3000 * message.text.length / 5, 5000);
+	while(bot && bot.getAttribute('data-time') > message.time - estimatedTime && bot.previousSibling) {
 		bot = bot.previousSibling;
 	}
 	str.log.insertBefore(el, bot && (bot.previousSibling? bot.nextSibling: bot));
