@@ -128,13 +128,13 @@ Stream.prototype.close = function (){
 
 Stream.prototype.hide = function() {
 	this.stream.className = this.stream.className + " scrollback-stream-hidden";
-	this.hidebtn.innerText = '‾';
+	this.hidebtn.innerHTML = '‾';
 };
 
 Stream.prototype.show = function() {
 	this.stream.className = this.stream.className.replace(/\sscrollback-stream-hidden/g, '');
-	this.titleText.innerText='';
-	this.hidebtn.innerText = '_';
+	this.titleText.innerHTML='';
+	this.hidebtn.innerHTML = '_';
 };
 
 Stream.prototype.send = function (){
@@ -317,7 +317,7 @@ Stream.message = function(message) {
 	
 	
 	if(str.stream.className.indexOf('scrollback-stream-hidden') != -1) {
-		str.titleText.innerText = ' ▸ ' + message.from + ' • ' + message.text;
+		str.titleText.innerHTML = ' ▸ ' + message.from + ' • ' + message.text;
 	}
 
 	if(typeof str.firstMessageAt == 'undefined' ||
