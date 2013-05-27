@@ -1,4 +1,5 @@
 var maxWidth = 400, maxHeight = 400, maxGap = 20, margin = 40;
+var themes = {};
 
 var css = {
 	".scrollback-hidden": { position: "absolute", visibility: "hidden" },
@@ -6,8 +7,7 @@ var css = {
 	".scrollback-stream": {
 		"position": "fixed",
 		"width": "480px", "height": "480px", "bottom": "0px",
-		"background": "#333", color: "#fff",
-		"boxShadow": "0px 0px 8px 2px rgba(0,0,0,1)",
+		"boxShadow": "0px 0px 8px 2px rgba(0,0,0,0.5)",
 		"boxSizing": "border-box", "webkitBoxSizing": "border-box",
 		"mozBoxSizing": "border-box", "msBoxSizing": "border-box",
 		"oBoxSizing": "border-box",
@@ -22,26 +22,24 @@ var css = {
 	},
 		".scrollback-stream-hidden .scrollback-hide": { display: "none" },
 		".scrollback-close, .scrollback-hide": {
-			float: "right", width: "48px", fontWeight: "bold",
-			height: "48px", cursor: "pointer", lineHeight: "48px",
-			textAlign: "center", color: "#fff"
+			position: "absolute", top: "0",
+			width: "48px", height: "48px",
+			cursor: "pointer", zIndex: 1,
+			fontWeight: "bold", lineHeight: "48px", textAlign: "center"
 		},
-		".scrollback-close:hover, .scrollback-hide:hover": {
-			background: "#000"
-		},
-		".scrollback-title, .scrollback-toolbar": {
-			"height": "48px", background: "#333",
+		".scrollback-close": {right: 0},
+		".scrollback-hide": {right: "48px"},
+		".scrollback-title": {
+			"height": "48px",
 			lineHeight: "48px", paddingLeft: "10px",
 			left: "0px", right: "0px", position: "absolute",
-			fontWeight: "bold"
+			fontWeight: "bold",
+			zIndex: 9997,
+			top: "0"
 		},
-			".scrollback-title": {
-				color: "#fff", zIndex: 9997,
-				top: "0", height: "48px"
+			".scrollback-title-text":{
+				fontWeight: "normal", color: "#999"
 			},
-				".scrollback-title-text":{
-					fontWeight: "normal", color: "#999"
-				},
 			".scrollback-toolbar": {
 				background: "#eee", height: "40px", top: "40px",
 				display:"none"
@@ -118,6 +116,83 @@ var css = {
 		".scrollback-text": { width: "100%", background: "#fff", color: "#000" },
 	".scrollback-poweredby": {
 		position: "absolute", bottom: "4px", right: "16px", height: "16px",
-		width: "121px", background: "url(poweredby.png)"
+		width: "121px", background: "url(http://scrollback.io/poweredby.png)"
 	}
 };
+
+themes.light = {
+	".scrollback-stream": {
+		"background": "#eee", color: "#000",
+	},
+		".scrollback-close, .scrollback-hide": {
+			color: "#000", background: "#eee"
+		},
+		".scrollback-close:hover, .scrollback-hide:hover": {
+			background: "#fff"
+		},
+		".scrollback-title, .scrollback-toolbar": {
+			background: "#eee", color: "#000"
+		},
+			".scrollback-title-text":{
+				color: "#666"
+			},
+		".scrollback-log": {
+			color: "#000"
+		},
+			".scrollback-message-nick": { "color": "#666" },
+			".scrollback-message-separator": { "color": "#999", },
+			".scrollback-message-join, .scrollback-message-part": { "color": "#666", },
+	".scrollback-timeline": {
+		background: "#eee",
+	},
+		".scrollback-thumb": {
+			background: "#999"
+		},
+		".scrollback-nick, .scrollback-text": {
+			"border": "1px solid #ccc",
+		},
+		".scrollback-nick": {
+			color: "#666", "background": "#ccc"
+		},
+		".scrollback-text": { background: "#fff", color: "#000" },
+	".scrollback-poweredby": {
+		background: "url(http://scrollback.io/poweredby.png)"
+	}
+};
+
+themes.dark = {
+	".scrollback-stream": {
+		"background": "#333", color: "#fff",
+	},
+		".scrollback-close, .scrollback-hide": {
+			color: "#fff", background: "#333"
+		},
+		".scrollback-close:hover, .scrollback-hide:hover": {
+			background: "#000"
+		},
+		".scrollback-title, .scrollback-toolbar": {
+			background: "#333", color: "#fff"
+		},
+			".scrollback-title-text":{
+				color: "#999"
+			},
+		".scrollback-log": {
+			color: "#fff"
+		},
+			".scrollback-message-nick": { "color": "#999" },
+			".scrollback-message-separator": { "color": "#666", },
+			".scrollback-message-join, .scrollback-message-part": { "color": "#999", },
+	".scrollback-timeline": {
+		background: "#333",
+	},
+		".scrollback-thumb": {
+			background: "#000"
+		},
+		".scrollback-nick": {
+			color: "#666", "background": "#ccc"
+		},
+		".scrollback-text": { background: "#fff", color: "#000" },
+	".scrollback-poweredby": {
+		background: "url(http://scrollback.io/poweredby.png)"
+	}
+}

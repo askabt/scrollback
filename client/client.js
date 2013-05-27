@@ -4705,6 +4705,7 @@ DomReady.ready(function() {
 	var i, stream;
 	
 	addStyles(css);
+	addStyles(scrollback.theme && themes[scrollback.theme]? themes[scrollback.theme]: theme.light);
 	addEvent(window, 'resize', Stream.position);
 	
 	if(scrollback.streams && scrollback.streams.length) {
@@ -4815,6 +4816,7 @@ Stream.prototype.close = function (){
 	delete streams[this.id];
 	socket.emit('part', this.id);
 	document.body.removeChild(this.stream);
+	Stream.position();
 };
 
 Stream.prototype.hide = function() {
@@ -4823,9 +4825,11 @@ Stream.prototype.hide = function() {
 };
 
 Stream.prototype.show = function() {
+	var self = this;
 	this.stream.className = this.stream.className.replace(/\sscrollback-stream-hidden/g, '');
 	this.titleText.innerHTML='';
 	this.hidebtn.innerHTML = '_';
+	setTimeout(function() { self.renderTimeline(); }, 250 );
 };
 
 Stream.prototype.send = function (){
@@ -4856,98 +4860,10 @@ Stream.prototype.select = function() {
 	Stream.position();
 };
 
-Stream.prototype.login = function() {
-	var w = window.open('http://' + scrollback.server + '/login.html', 'login',
-		'height=320,width=480,centerscreen');
-}
 Stream.prototype.ready = function() {
 	this.nick.disabled = false;
 	this.text.disabled = false;
 	this.text.value = '';
-	console.log(this.id + "  is ready");
-};
-
-Stream.prototype.scroll = function() {
-	var log = this.log, up, until = this.firstMessageAt;
-	
-	if(typeof this.lastScrollTop !== 'undefined' && until > 0 &&
-		until != this.lastRequestedUntil
-	) {
-		up = log.scrollTop < this.lastScrollTop;
-		if(log.scrollTop < log.clientHeight && up) {
-			this.lastRequestedUntil = until;
-			socket.emit('get', {to: this.id, until: until, type: "text"});
-		}
-	}
-	
-	this.renderThumb();
-	
-	if(log.scrollHeight - (log.scrollTop + log.clientHeight) < 16)
-		this.scrolledUp = false;
-	else
-		this.scrolledUp = true;
-
-	this.lastScrollTop = log.scrollTop;
-};
-
-Stream.prototype.renderThumb = function() {
-	var log = this.log, msg = log.lastChild, pos,
-		thumbTop = this.tread.clientHeight,
-		thumbBottom = 0;
-	
-	while(msg) {
-		pos = offset(msg)[1];
-		if(pos > log.scrollTop &&
-			pos < log.scrollTop + log.clientHeight
-		) {
-			pos = msg.getAttribute('data-time');
-			pos = (pos - this.firstMessageAt) * this.tread.clientHeight /
-				(this.lastMessageAt - this.firstMessageAt);
-			if(pos < thumbTop) thumbTop = pos;
-			if(pos > thumbBottom) thumbBottom = pos;
-		}
-		msg = msg.previousSibling;
-	}
-	
-	this.thumb.style.top = thumbTop + 'px';
-	this.thumb.style.height = (thumbBottom - thumbTop +1) + 'px';
-};
-
-Stream.prototype.renderTimeline = function() {
-	var buckets = [], n=128, h=this.tread.clientHeight/n, i,
-		first = this.firstMessageAt, duration=this.lastMessageAt-first,
-		msg = this.log.firstChild, color, r, ml = ["div"], max=0, frac;
-	
-	this.tread.innerHTML = '';
-	
-	while(msg) {
-		i = Math.floor((msg.getAttribute('data-time') - first)*n / duration);
-		if(!buckets[i]) buckets[i] = {colors: [], n: 0}
-		color = msg.style.borderLeftColor; // Yuck.
-		buckets[i].colors[color] = (buckets[i].colors[color] || 0) + 1;
-		buckets[i].n += 1;
-		if(buckets[i].n > max) max = buckets[i].n;
-		msg = msg.nextSibling;
-	}
-	
-	for(i=0; i<n; i++) {
-		if(buckets[i]) {
-			r = ["div", {'class': 'scrollback-tread-row', style: {
-				top: (i*h) + 'px'
-			}}];
-			for(color in buckets[i].colors) {
-				r.push(["div", {'class': 'scrollback-tread-dot', style: {
-					background: color, height: h + 'px',
-					width: (buckets[i].colors[color]*18/max) + 'px'
-				}}]);
-			}
-			ml.push(r);
-		}
-	}
-	
-	this.tread.appendChild(JsonML.parse(ml));
-	
-	this.renderThumb();
 };
 
 // ---- Static methods ----
@@ -4960,7 +4876,22 @@ Stream.message = function(message) {
 		return text;
 	}
 
-	str = Stream.get(message.to);	
+	str = Stream.get(message.to);
+	
+	if(message.type == 'text') {
+		if(typeof str.firstMessageAt == 'undefined' ||
+			message.time < str.firstMessageAt) str.firstMessageAt = message.time;
+		
+		if(typeof str.lastMessageAt == 'undefined' ||
+			message.time > str.lastMessageAt) str.lastMessageAt = message.time;
+	}
+	
+	if(str.stream.className.indexOf('scrollback-stream-hidden') != -1
+	   && scrollback.ticker && message.type == 'text'
+	) {
+		str.titleText.innerHTML = ' ▸ ' + message.from + ' • ' + message.text;
+	}
+	
 	switch(message.type) {
 		case 'text':
 			message.text = format(message.text);
@@ -4973,54 +4904,22 @@ Stream.message = function(message) {
 			];
 			break;
 		case 'join':
-			// var notice=str.notice.innerHTML;
-			// var notices=notice.split(",");
-			// if(typeof str.noticeTimeout !=="undefined")
-			// 	clearTimeout(str.noticeTimeout);
-			// if(notices.length==3){
-			// 	notice=notices[1]+","+notices[2];
-			// }
-			// str.notice.innerHTML=notice+","+message.from+((message.type==="join")?" joined":" left");
-			// str.notice.className=str.notice.className.replace(" scrollback-hidden","");
-
-			// str.noticeTimeout=setTimeout(function(){
-			// 	console.log("timeout called.");
-			// 	str.notice.innerHTML="";
-			// 	str.notice.className=str.notice.className+" scrollback-hidden";
-			// },1000);
 			el = [["span", message.from + ' joined.']];
-
-			// fall through.
+			// intentional fall through.
 		case 'part':
 			el = el || [["span", message.from + ' left' + (
 				message.text? ' (' + message.text + ')': '.'
 			)]];
-
 			setTimeout(function(){
 				el.className += ' scrollback-message-hidden';
 			}, 1000);
-
 			break;
 		default:
 			el = [["span", message.text]];
 	}
 	
-	
-	
-	if(str.stream.className.indexOf('scrollback-stream-hidden') != -1) {
-		str.titleText.innerHTML = ' ▸ ' + message.from + ' • ' + message.text;
-	}
-
-	if(typeof str.firstMessageAt == 'undefined' ||
-		message.time < str.firstMessageAt) str.firstMessageAt = message.time;
-	
-	if(!message.time) console.log("Hit zero at ", message);
-	
-	if(typeof str.lastMessageAt == 'undefined' ||
-		message.time > str.lastMessageAt) str.lastMessageAt = message.time;
-	
 	if(!el) return;
-	
+
 	el = JsonML.parse(["div", {
 		'class': 'scrollback-message scrollback-message-' + message.type,
 		'style': { 'borderLeftColor': hashColor(message.from) },
@@ -5029,8 +4928,8 @@ Stream.message = function(message) {
 	bot = str.log.lastChild;
 
 	// rearranges messages estimating time to type them
-	var estimatedTime = Math.min(3000 * message.text.length / 5, 5000);
-	while(bot && bot.getAttribute('data-time') > message.time - estimatedTime && bot.previousSibling) {
+	// var estimatedTime = Math.min(3000 * message.text.length / 5, 5000);
+	while(bot && bot.getAttribute('data-time') > message.time /* - estimatedTime */ && bot.previousSibling) {
 		bot = bot.previousSibling;
 	}
 	str.log.insertBefore(el, bot && (bot.previousSibling? bot.nextSibling: bot));
@@ -5048,8 +4947,9 @@ Stream.message = function(message) {
 	
 	if(str.scrollTimer) clearTimeout(str.scrollTimer);
 	str.scrollTimer = setTimeout(function() {
-		str.renderTimeline();
-	}, 200);
+		if(str.stream.className.indexOf('scrollback-stream-hidden') == -1)
+			str.renderTimeline();
+	}, 100);
 };
 
 Stream.get = function(id) {
@@ -5130,7 +5030,88 @@ function hashColor(name) {
 	return color(hash(name));
 }
 
-var maxWidth = 400, maxHeight = 400, maxGap = 20, margin = 40;
+Stream.prototype.scroll = function() {
+	var log = this.log, up, until = this.firstMessageAt;
+	
+	if(typeof this.lastScrollTop !== 'undefined' && until > 0 &&
+		until != this.lastRequestedUntil
+	) {
+		up = log.scrollTop < this.lastScrollTop;
+		if(log.scrollTop < log.clientHeight && up) {
+			this.lastRequestedUntil = until;
+			socket.emit('get', {to: this.id, until: until, type: "text"});
+		}
+	}
+	
+	this.renderThumb();
+	
+	if(log.scrollHeight - (log.scrollTop + log.clientHeight) < 16)
+		this.scrolledUp = false;
+	else
+		this.scrolledUp = true;
+
+	this.lastScrollTop = log.scrollTop;
+};
+
+Stream.prototype.renderThumb = function() {
+	var log = this.log, msg = log.lastChild, pos,
+		thumbTop = this.tread.clientHeight,
+		thumbBottom = 0,
+		viewTop = offset(log)[1] + log.scrollTop,
+		viewBottom = viewTop + log.clientHeight;
+	
+	while(msg) {
+		pos = offset(msg)[1];
+		if(pos >= viewTop && pos <= viewBottom){
+			pos = msg.getAttribute('data-time');
+			pos = (pos - this.firstMessageAt) * this.tread.clientHeight /
+				(this.lastMessageAt - this.firstMessageAt);
+			if(pos < thumbTop) thumbTop = pos;
+			if(pos > thumbBottom) thumbBottom = pos;
+		}
+		msg = msg.previousSibling;
+	}
+	
+	this.thumb.style.top = thumbTop + 'px';
+	this.thumb.style.height = (thumbBottom - thumbTop +1) + 'px';
+};
+
+Stream.prototype.renderTimeline = function() {
+	var buckets = [], n=128, h=this.tread.clientHeight/n, i,
+		first = this.firstMessageAt, duration=this.lastMessageAt-first,
+		msg = this.log.firstChild, color, r, ml = ["div"], max=0, frac;
+	
+	this.tread.innerHTML = '';
+	
+	while(msg) {
+		i = Math.floor((msg.getAttribute('data-time') - first)*n / duration);
+		if(!buckets[i]) buckets[i] = {colors: [], n: 0}
+		color = msg.style.borderLeftColor; // Yuck.
+		buckets[i].colors[color] = (buckets[i].colors[color] || 0) + 1;
+		buckets[i].n += 1;
+		if(buckets[i].n > max) max = buckets[i].n;
+		msg = msg.nextSibling;
+	}
+	
+	for(i=0; i<n; i++) {
+		if(buckets[i]) {
+			r = ["div", {'class': 'scrollback-tread-row', style: {
+				top: (i*h) + 'px'
+			}}];
+			for(color in buckets[i].colors) {
+				r.push(["div", {'class': 'scrollback-tread-dot', style: {
+					background: color, height: h + 'px',
+					width: (buckets[i].colors[color]*18/max) + 'px'
+				}}]);
+			}
+			ml.push(r);
+		}
+	}
+	
+	this.tread.appendChild(JsonML.parse(ml));
+	this.renderThumb();
+};var maxWidth = 400, maxHeight = 400, maxGap = 20, margin = 40;
+var themes = {};
 
 var css = {
 	".scrollback-hidden": { position: "absolute", visibility: "hidden" },
@@ -5138,8 +5119,7 @@ var css = {
 	".scrollback-stream": {
 		"position": "fixed",
 		"width": "480px", "height": "480px", "bottom": "0px",
-		"background": "#333", color: "#fff",
-		"boxShadow": "0px 0px 8px 2px rgba(0,0,0,1)",
+		"boxShadow": "0px 0px 8px 2px rgba(0,0,0,0.5)",
 		"boxSizing": "border-box", "webkitBoxSizing": "border-box",
 		"mozBoxSizing": "border-box", "msBoxSizing": "border-box",
 		"oBoxSizing": "border-box",
@@ -5154,26 +5134,24 @@ var css = {
 	},
 		".scrollback-stream-hidden .scrollback-hide": { display: "none" },
 		".scrollback-close, .scrollback-hide": {
-			float: "right", width: "48px", fontWeight: "bold",
-			height: "48px", cursor: "pointer", lineHeight: "48px",
-			textAlign: "center", color: "#fff"
+			position: "absolute", top: "0",
+			width: "48px", height: "48px",
+			cursor: "pointer", zIndex: 1,
+			fontWeight: "bold", lineHeight: "48px", textAlign: "center"
 		},
-		".scrollback-close:hover, .scrollback-hide:hover": {
-			background: "#000"
-		},
-		".scrollback-title, .scrollback-toolbar": {
-			"height": "48px", background: "#333",
+		".scrollback-close": {right: 0},
+		".scrollback-hide": {right: "48px"},
+		".scrollback-title": {
+			"height": "48px",
 			lineHeight: "48px", paddingLeft: "10px",
 			left: "0px", right: "0px", position: "absolute",
-			fontWeight: "bold"
+			fontWeight: "bold",
+			zIndex: 9997,
+			top: "0"
 		},
-			".scrollback-title": {
-				color: "#fff", zIndex: 9997,
-				top: "0", height: "48px"
+			".scrollback-title-text":{
+				fontWeight: "normal", color: "#999"
 			},
-				".scrollback-title-text":{
-					fontWeight: "normal", color: "#999"
-				},
 			".scrollback-toolbar": {
 				background: "#eee", height: "40px", top: "40px",
 				display:"none"
@@ -5250,10 +5228,86 @@ var css = {
 		".scrollback-text": { width: "100%", background: "#fff", color: "#000" },
 	".scrollback-poweredby": {
 		position: "absolute", bottom: "4px", right: "16px", height: "16px",
-		width: "121px", background: "url(poweredby.png)"
+		width: "121px", background: "url(http://scrollback.io/poweredby.png)"
 	}
 };
-/*
+
+themes.light = {
+	".scrollback-stream": {
+		"background": "#eee", color: "#000",
+	},
+		".scrollback-close, .scrollback-hide": {
+			color: "#000", background: "#eee"
+		},
+		".scrollback-close:hover, .scrollback-hide:hover": {
+			background: "#fff"
+		},
+		".scrollback-title, .scrollback-toolbar": {
+			background: "#eee", color: "#000"
+		},
+			".scrollback-title-text":{
+				color: "#666"
+			},
+		".scrollback-log": {
+			color: "#000"
+		},
+			".scrollback-message-nick": { "color": "#666" },
+			".scrollback-message-separator": { "color": "#999", },
+			".scrollback-message-join, .scrollback-message-part": { "color": "#666", },
+	".scrollback-timeline": {
+		background: "#eee",
+	},
+		".scrollback-thumb": {
+			background: "#999"
+		},
+		".scrollback-nick, .scrollback-text": {
+			"border": "1px solid #ccc",
+		},
+		".scrollback-nick": {
+			color: "#666", "background": "#ccc"
+		},
+		".scrollback-text": { background: "#fff", color: "#000" },
+	".scrollback-poweredby": {
+		background: "url(http://scrollback.io/poweredby.png)"
+	}
+};
+
+themes.dark = {
+	".scrollback-stream": {
+		"background": "#333", color: "#fff",
+	},
+		".scrollback-close, .scrollback-hide": {
+			color: "#fff", background: "#333"
+		},
+		".scrollback-close:hover, .scrollback-hide:hover": {
+			background: "#000"
+		},
+		".scrollback-title, .scrollback-toolbar": {
+			background: "#333", color: "#fff"
+		},
+			".scrollback-title-text":{
+				color: "#999"
+			},
+		".scrollback-log": {
+			color: "#fff"
+		},
+			".scrollback-message-nick": { "color": "#999" },
+			".scrollback-message-separator": { "color": "#666", },
+			".scrollback-message-join, .scrollback-message-part": { "color": "#999", },
+	".scrollback-timeline": {
+		background: "#333",
+	},
+		".scrollback-thumb": {
+			background: "#000"
+		},
+		".scrollback-nick": {
+			color: "#666", "background": "#ccc"
+		},
+		".scrollback-text": { background: "#fff", color: "#000" },
+	".scrollback-poweredby": {
+		background: "url(http://scrollback.io/poweredby.png)"
+	}
+}/*
  * This is version 1 of  the client side scrollback SDK.
  *
  * @author Aravind
@@ -5266,14 +5320,13 @@ var css = {
  *   - getByClass.js
  *   - jsonml2.js
  */
-var socket = io.connect(location.protocol + scrollback.server);
+var socket = io.connect(scrollback.host);
 var timeAdjustment = 0;
 
 
 socket.on('connect', function(message) {
 	if(scrollback.streams && scrollback.streams.length) {
 		for(i=0; i<scrollback.streams.length; i++) {
-			console.log('Joining', scrollback.streams[i]);
 			socket.emit('join', scrollback.streams[i]);
 		}
 	}
@@ -5281,11 +5334,9 @@ socket.on('connect', function(message) {
 
 socket.on('message', function(message) {
 	var stream;
-//	console.log('Message to ' + message.to, streams);
 	if(message.type == 'join' && message.from == nick) {
 		stream = streams[message.to];
 		if(stream.isReady) return;
-		console.log('Connected. Requesting missing logs for ' + message.to);
 		socket.emit('get', {to: stream.id, until: message.time, since: stream.lastMessageAt, type: 'text'});
 		stream.ready();
 		stream.isReady = true;
@@ -5303,7 +5354,6 @@ socket.on('error', function(message) {
 });
 
 socket.on('nick', function(n) {
-	console.log("Nick updated to " + n);
 	Stream.updateNicks(n);
 });
 
