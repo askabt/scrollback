@@ -6,6 +6,7 @@ var db = require('mysql').createConnection({
 });
 	
 exports.add = function(message) {
+	console.log("Archiving ", message);
 	db.query("INSERT INTO irc SET `from`=?, `to`=?, `type`=?, `text`=?, "+
 		"`time`=FROM_UNIXTIME(?)", [message.from, message.to, message.type,
 		message.text, message.time/1000]
@@ -60,8 +61,8 @@ exports.get = function(options, callback) {
 			console.log(err); return;
 		}
 		console.log("RESULTS:", data.length);
-		if(data.length < 256) {
-			data.unshift({
+		if(limit && data.length < limit) {
+			(desc? data.unshift: data.push)({
 				type: "notice", from: '', to: options.to || '',
 				text: 'There are no more messages', time: 0
 			});

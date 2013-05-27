@@ -14,6 +14,7 @@ DomReady.ready(function() {
 	var i, stream;
 	
 	addStyles(css);
+	addStyles(scrollback.theme && themes[scrollback.theme]? themes[scrollback.theme]: theme.light);
 	addEvent(window, 'resize', Stream.position);
 	
 	if(scrollback.streams && scrollback.streams.length) {
@@ -124,17 +125,20 @@ Stream.prototype.close = function (){
 	delete streams[this.id];
 	socket.emit('part', this.id);
 	document.body.removeChild(this.stream);
+	Stream.position();
 };
 
 Stream.prototype.hide = function() {
 	this.stream.className = this.stream.className + " scrollback-stream-hidden";
-	this.hidebtn.innerText = '‾';
+	this.hidebtn.innerHTML = '‾';
 };
 
 Stream.prototype.show = function() {
+	var self = this;
 	this.stream.className = this.stream.className.replace(/\sscrollback-stream-hidden/g, '');
-	this.titleText.innerText='';
-	this.hidebtn.innerText = '_';
+	this.titleText.innerHTML='';
+	this.hidebtn.innerHTML = '_';
+	setTimeout(function() { self.renderTimeline(); }, 250 );
 };
 
 Stream.prototype.send = function (){
@@ -165,98 +169,10 @@ Stream.prototype.select = function() {
 	Stream.position();
 };
 
-Stream.prototype.login = function() {
-	var w = window.open('http://' + scrollback.server + '/login.html', 'login',
-		'height=320,width=480,centerscreen');
-}
 Stream.prototype.ready = function() {
 	this.nick.disabled = false;
 	this.text.disabled = false;
 	this.text.value = '';
-	console.log(this.id + "  is ready");
-};
-
-Stream.prototype.scroll = function() {
-	var log = this.log, up, until = this.firstMessageAt;
-	
-	if(typeof this.lastScrollTop !== 'undefined' && until > 0 &&
-		until != this.lastRequestedUntil
-	) {
-		up = log.scrollTop < this.lastScrollTop;
-		if(log.scrollTop < log.clientHeight && up) {
-			this.lastRequestedUntil = until;
-			socket.emit('get', {to: this.id, until: until, type: "text"});
-		}
-	}
-	
-	this.renderThumb();
-	
-	if(log.scrollHeight - (log.scrollTop + log.clientHeight) < 16)
-		this.scrolledUp = false;
-	else
-		this.scrolledUp = true;
-
-	this.lastScrollTop = log.scrollTop;
-};
-
-Stream.prototype.renderThumb = function() {
-	var log = this.log, msg = log.lastChild, pos,
-		thumbTop = this.tread.clientHeight,
-		thumbBottom = 0;
-	
-	while(msg) {
-		pos = offset(msg)[1];
-		if(pos > log.scrollTop &&
-			pos < log.scrollTop + log.clientHeight
-		) {
-			pos = msg.getAttribute('data-time');
-			pos = (pos - this.firstMessageAt) * this.tread.clientHeight /
-				(this.lastMessageAt - this.firstMessageAt);
-			if(pos < thumbTop) thumbTop = pos;
-			if(pos > thumbBottom) thumbBottom = pos;
-		}
-		msg = msg.previousSibling;
-	}
-	
-	this.thumb.style.top = thumbTop + 'px';
-	this.thumb.style.height = (thumbBottom - thumbTop +1) + 'px';
-};
-
-Stream.prototype.renderTimeline = function() {
-	var buckets = [], n=128, h=this.tread.clientHeight/n, i,
-		first = this.firstMessageAt, duration=this.lastMessageAt-first,
-		msg = this.log.firstChild, color, r, ml = ["div"], max=0, frac;
-	
-	this.tread.innerHTML = '';
-	
-	while(msg) {
-		i = Math.floor((msg.getAttribute('data-time') - first)*n / duration);
-		if(!buckets[i]) buckets[i] = {colors: [], n: 0}
-		color = msg.style.borderLeftColor; // Yuck.
-		buckets[i].colors[color] = (buckets[i].colors[color] || 0) + 1;
-		buckets[i].n += 1;
-		if(buckets[i].n > max) max = buckets[i].n;
-		msg = msg.nextSibling;
-	}
-	
-	for(i=0; i<n; i++) {
-		if(buckets[i]) {
-			r = ["div", {'class': 'scrollback-tread-row', style: {
-				top: (i*h) + 'px'
-			}}];
-			for(color in buckets[i].colors) {
-				r.push(["div", {'class': 'scrollback-tread-dot', style: {
-					background: color, height: h + 'px',
-					width: (buckets[i].colors[color]*18/max) + 'px'
-				}}]);
-			}
-			ml.push(r);
-		}
-	}
-	
-	this.tread.appendChild(JsonML.parse(ml));
-	
-	this.renderThumb();
 };
 
 // ---- Static methods ----
@@ -264,14 +180,27 @@ Stream.prototype.renderTimeline = function() {
 Stream.message = function(message) {
 	var el, str, bot, hidden, i, j,name,color="#666";
 	
-	console.log('message', message);
-	
 	function format(text) {
 		// do something more interesting next time.
 		return text;
 	}
 
-	str = Stream.get(message.to);	
+	str = Stream.get(message.to);
+	
+	if(message.type == 'text') {
+		if(typeof str.firstMessageAt == 'undefined' ||
+			message.time < str.firstMessageAt) str.firstMessageAt = message.time;
+		
+		if(typeof str.lastMessageAt == 'undefined' ||
+			message.time > str.lastMessageAt) str.lastMessageAt = message.time;
+	}
+	
+	if(str.stream.className.indexOf('scrollback-stream-hidden') != -1
+	   && scrollback.ticker && message.type == 'text'
+	) {
+		str.titleText.innerHTML = ' ▸ ' + message.from + ' • ' + message.text;
+	}
+	
 	switch(message.type) {
 		case 'text':
 			message.text = format(message.text);
@@ -294,38 +223,21 @@ Stream.message = function(message) {
 			];
 			break;
 		case 'join':
-			// var notice=str.notice.innerHTML;
-			// var notices=notice.split(",");
-			// if(typeof str.noticeTimeout !=="undefined")
-			// 	clearTimeout(str.noticeTimeout);
-			// if(notices.length==3){
-			// 	notice=notices[1]+","+notices[2];
-			// }
-			// str.notice.innerHTML=notice+","+message.from+((message.type==="join")?" joined":" left");
-			// str.notice.className=str.notice.className.replace(" scrollback-hidden","");
-
-			// str.noticeTimeout=setTimeout(function(){
-			// 	console.log("timeout called.");
-			// 	str.notice.innerHTML="";
-			// 	str.notice.className=str.notice.className+" scrollback-hidden";
-			// },1000);
 			el = [["span", message.from + ' joined.']];
-
-			// fall through.
+			// intentional fall through.
 		case 'part':
 			el = el || [["span", message.from + ' left' + (
 				message.text? ' (' + message.text + ')': '.'
 			)]];
-
 			setTimeout(function(){
 				el.className += ' scrollback-message-hidden';
 			}, 1000);
-
 			break;
 		default:
 			el = [["span", message.text]];
 	}
 	
+<<<<<<< HEAD
 	
 	
 	if(str.stream.className.indexOf('scrollback-stream-hidden') != -1 && message.type==="textAlign") {
@@ -341,15 +253,20 @@ Stream.message = function(message) {
 	if(typeof str.lastMessageAt == 'undefined' ||
 		message.time > str.lastMessageAt) str.lastMessageAt = message.time;
 	
+=======
+>>>>>>> 0e3c820f92b822a96a9c62abf1c27049a56608cd
 	if(!el) return;
-	
+
 	el = JsonML.parse(["div", {
 		'class': 'scrollback-message scrollback-message-' + message.type,
 		'style': { 'borderLeftColor': hashColor(message.from) },
 		'data-time': message.time
 	}].concat(el));
 	bot = str.log.lastChild;
-	while(bot && bot.getAttribute('data-time') > message.time && bot.previousSibling) {
+
+	// rearranges messages estimating time to type them
+	// var estimatedTime = Math.min(3000 * message.text.length / 5, 5000);
+	while(bot && bot.getAttribute('data-time') > message.time /* - estimatedTime */ && bot.previousSibling) {
 		bot = bot.previousSibling;
 	}
 	str.log.insertBefore(el, bot && (bot.previousSibling? bot.nextSibling: bot));
@@ -367,8 +284,9 @@ Stream.message = function(message) {
 	
 	if(str.scrollTimer) clearTimeout(str.scrollTimer);
 	str.scrollTimer = setTimeout(function() {
-		str.renderTimeline();
-	}, 200);
+		if(str.stream.className.indexOf('scrollback-stream-hidden') == -1)
+			str.renderTimeline();
+	}, 100);
 };
 
 Stream.get = function(id) {
@@ -451,131 +369,3 @@ function hashColor(name) {
 	return color(hash(name));
 }
 
-// ---- JsonML Templates ----
-
-
-// ---- CSS styles to insert ----
-
-var maxWidth = 400, maxHeight = 400, maxGap = 20, margin = 40;
-
-var css = {
-	".scrollback-hidden": { position: "absolute", visibility: "hidden" },
-
-	".scrollback-stream": {
-		"position": "fixed",
-		"width": "480px", "height": "480px", "bottom": "0px",
-		"background": "#333", color: "#fff",
-		"boxShadow": "0px 0px 8px 2px rgba(0,0,0,1)",
-		"boxSizing": "border-box", "webkitBoxSizing": "border-box",
-		"mozBoxSizing": "border-box", "msBoxSizing": "border-box",
-		"oBoxSizing": "border-box",
-		"fontSize": "13px", lineHeight: "14px",
-		"transition": "all 0.2s ease-out",
-		"webkitTransition": "all 0.2s ease-out", "mozTransition": "all 0.2s ease-out",
-		"oTransition": "all 0.2s ease-out", "msTransition": "all 0.2s ease-out",
-		"overflow": "hidden"
-	},
-	".scrollback-stream-hidden": {
-		"height": "40px !important"
-	},
-		".scrollback-stream-hidden .scrollback-hide": { display: "none" },
-		".scrollback-close, .scrollback-hide": {
-			float: "right", width: "48px", fontWeight: "bold",
-			height: "48px", cursor: "pointer", lineHeight: "48px",
-			textAlign: "center", color: "#fff"
-		},
-		".scrollback-close:hover, .scrollback-hide:hover": {
-			background: "#000"
-		},
-		".scrollback-title, .scrollback-toolbar": {
-			"height": "48px", background: "#333",
-			lineHeight: "48px", paddingLeft: "10px",
-			left: "0px", right: "0px", position: "absolute",
-			fontWeight: "bold"
-		},
-			".scrollback-title": {
-				color: "#fff", zIndex: 9997,
-				top: "0", height: "48px"
-			},
-				".scrollback-title-text":{
-					fontWeight: "normal", color: "#999"
-				},
-			".scrollback-toolbar": {
-				background: "#eee", height: "40px", top: "40px",
-				display:"none"
-			},
-			".scrollback-toolbtn": {
-				float: "left", height: "40px", lineHeight: "40px",
-				width: "40px", cursor: "pointer", textAlign: "center",
-				borderRadius: "3px"
-			},
-			".scrollback-toolbtn:hover": { background: "#fff" },
-		".scrollback-log": {
-			"boxSizing": "border-box", "webkitBoxSizing": "border-box",
-			"mozBoxSizing": "border-box", "msBoxSizing": "border-box",
-			"oBoxSizing": "border-box",
-			"position": "absolute", "top": "48px",
-			"bottom": "80px", "left": "0", "right": "0",
-			"overflowY": "auto", "overflowX": "hidden",
-			color: "#fff"
-		},
-			".scrollback-message": {
-				"overflow": "hidden", padding: "2px 24px 2px 48px",
-				"transition": "all 0.2s ease-out", textIndent: "-32px",
-				"webkitTransition": "all 0.2s ease-out", "mozTransition": "all 0.2s ease-out",
-				"oTransition": "all 0.2s ease-out", "msTransition": "all 0.2s ease-out",
-				"borderLeft": "4px solid #eee", opacity: 1, height: "auto"
-			},
-			".scrollback-message-hidden": {
-				"opacity": 0,
-				"transition": "all 2s ease-out",
-				"webkitTransition": "all 2s ease-out", "mozTransition": "all 2s ease-out",
-				"oTransition": "all 2s ease-out", "msTransition": "all 2s ease-out",
-			},
-			".scrollback-message-nick": { "color": "#999" },
-			".scrollback-message-separator": { "color": "#666", },
-			".scrollback-message-join, .scrollback-message-part": { "color": "#666", },
-	".scrollback-timeline": {
-		background: "#333", position: "absolute", top: "48px", right: "0", width: "18px",
-		bottom: "80px", zIndex: 9996
-	},
-		".scrollback-tread": {
-			position: "absolute", top: 0, left: 0, right: 0, bottom: 0,
-			zIndex: 1
-		},
-			".scrollback-tread-row": { position: "absolute", height: "4px", width: "100%" },
-			".scrollback-tread-dot": { 'float': "right", height: '4px', borderRadius: "0"},
-		".scrollback-thumb": {
-			background: "#000", position: "absolute", left: "0px",
-			width: "18px", zIndex: 0
-		},
-	".scrollback-send": {
-		"position": "absolute", "padding": "0", "margin": "0",
-		"bottom": "24px", "left": "8px", "right": "8px", "height": "48px",
-	},
-		".scrollback-nick, .scrollback-text": {
-			"display": "block", "border": "none",
-			"boxSizing": "border-box", "webkitBoxSizing": "border-box",
-			"mozBoxSizing": "border-box", "msBoxSizing": "border-box",
-			"oBoxSizing": "border-box", padding: "0 4px",
-			height: "48px", fontSize: "1em"
-		},
-
-		".scrollback-nick, .scrollback-text-wrap": {
-			"position": "absolute", "top": "0",
-			"margin": "0"
-		},
-		".scrollback-nick:focus, .scrollback-text:focus": {
-			outline: "none"
-		},
-		".scrollback-nick": {
-			"left": "8px", "width": "80px", color: "#666",
-			"background": "#ccc"
-		},
-		'.scrollback-text-wrap': { "right": "8px", "left": "88px" },
-		".scrollback-text": { width: "100%", background: "#fff", color: "#000" },
-	".scrollback-poweredby": {
-		position: "absolute", bottom: "4px", right: "16px", height: "16px",
-		width: "121px", background: "url(poweredby.png)"
-	}
-};
