@@ -60,7 +60,7 @@ function connect(server, nick, callback) {
 			callback(message('part', from, uh(channels[i]), reason));
 		}
 	});
-	
+
 	return client;
 }
 

@@ -158,7 +158,7 @@ Stream.prototype.send = function (){
 Stream.prototype.rename = function() {
 	var n = this.nick.value;
 	socket.emit('nick', n);
-	Stream.updateNicks(n);
+//	Stream.updateNicks(n);
 };
 
 Stream.prototype.select = function() {
@@ -183,6 +183,8 @@ Stream.message = function(message) {
 	var estimatedTime = Math.min(3000 * (message.text||'').length / 5, 5000),
 		name, color='#666';
 	
+
+	//console.log(message.type+" : "+ message.text);
 	function format(text) {
 		// do something more interesting next time.
 		return text;
@@ -292,6 +294,7 @@ Stream.updateNicks = function(n) {
 	for(i in streams) {
 		stream = streams[i];
 		stream.nick.value = n;
+//		console.log(n);
 	}
 	nick = n;
 };

@@ -4849,7 +4849,7 @@ Stream.prototype.send = function (){
 Stream.prototype.rename = function() {
 	var n = this.nick.value;
 	socket.emit('nick', n);
-	Stream.updateNicks(n);
+//	Stream.updateNicks(n);
 };
 
 Stream.prototype.select = function() {
@@ -4874,6 +4874,8 @@ Stream.message = function(message) {
 	var estimatedTime = Math.min(3000 * (message.text||'').length / 5, 5000),
 		name, color='#666';
 	
+
+	//console.log(message.type+" : "+ message.text);
 	function format(text) {
 		// do something more interesting next time.
 		return text;
@@ -4913,7 +4915,6 @@ Stream.message = function(message) {
 				'class': 'scrollback-message-separator', 'style': 'color:'+color
 			}, ' • '],
 			[ "span", { 'class': 'scrollback-message-text'}, message.text ]];
-
 			break;
 		case 'join':
 			el = [["span", message.from + ' joined.']];
@@ -4984,6 +4985,7 @@ Stream.updateNicks = function(n) {
 	for(i in streams) {
 		stream = streams[i];
 		stream.nick.value = n;
+		console.log(n);
 	}
 	nick = n;
 };
@@ -5016,6 +5018,8 @@ function hashColor(name) {
 	
 	function hash(s) {
 		var h=1, i, l;
+		s = s.toLowerCase().replace(/[^a-z0-9]+/g,' ').replace(/^\s+/g,'').replace(/\s+$/g,''); 
+		// nicks that differ only by case or punctuation should get the same color.
 		for (i=0, l=s.length; i<l; i++) {
 			h = (Math.abs(h<<(7+i))+s.charCodeAt(i))%1530;
 		}
@@ -5087,6 +5091,8 @@ Stream.prototype.renderThumb = function() {
 		}
 		msg = msg.previousSibling;
 	}
+	
+	thumbBottom = Math.min(thumbBottom, log.clientHeight);
 	
 	this.thumb.style.top = thumbTop + 'px';
 	this.thumb.style.height = (thumbBottom - thumbTop +1) + 'px';
@@ -5350,9 +5356,11 @@ socket.on('connect', function(message) {
 
 socket.on('message', function(message) {
 	var stream;
+
+	//console.log(message);
 	if(message.type == 'join' && message.from == nick) {
 		stream = streams[message.to];
-		if(stream.isReady) return;
+		if(!stream || stream.isReady) return;
 		socket.emit('get', {to: stream.id, until: message.time, since: stream.lastMessageAt, type: 'text'});
 		stream.ready();
 		stream.isReady = true;
@@ -5361,6 +5369,7 @@ socket.on('message', function(message) {
 		// do nothing.
 	}
 	else {
+	//	console.log(message.type+" : "+message.text);
 		Stream.message(message);
 	}
 });
@@ -5370,6 +5379,7 @@ socket.on('error', function(message) {
 });
 
 socket.on('nick', function(n) {
+	console.log("Nick change", n);
 	Stream.updateNicks(n);
 });
 

@@ -6,7 +6,7 @@ var db = require('mysql').createConnection({
 });
 	
 exports.add = function(message) {
-	console.log("Archiving ", message);
+//	console.log("Archiving ", message);
 	db.query("INSERT INTO irc SET `from`=?, `to`=?, `type`=?, `text`=?, "+
 		"`time`=FROM_UNIXTIME(?)", [message.from, message.to, message.type,
 		message.text, message.time/1000]

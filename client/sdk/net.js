@@ -25,9 +25,11 @@ socket.on('connect', function(message) {
 
 socket.on('message', function(message) {
 	var stream;
+
+	//console.log(message);
 	if(message.type == 'join' && message.from == nick) {
 		stream = streams[message.to];
-		if(stream.isReady) return;
+		if(!stream || stream.isReady) return;
 		socket.emit('get', {to: stream.id, until: message.time, since: stream.lastMessageAt, type: 'text'});
 		stream.ready();
 		stream.isReady = true;
@@ -36,6 +38,7 @@ socket.on('message', function(message) {
 		// do nothing.
 	}
 	else {
+	//	console.log(message.type+" : "+message.text);
 		Stream.message(message);
 	}
 });
@@ -45,6 +48,7 @@ socket.on('error', function(message) {
 });
 
 socket.on('nick', function(n) {
+//	console.log("Nick change", n);
 	Stream.updateNicks(n);
 });
 

@@ -58,6 +58,17 @@ io.sockets.on('connection', function(socket) {
 			client.addListener('registered', function() {
 				client.join('#'+id);
 			});
+			client.addListener("nick", function(oldnick,newnick,channels,message) {
+				console.log("nick change seen", arguments);
+				if(oldnick == nick) {
+					console.log("My own nick has changed!",oldnick,nick,newnick);
+					// Go change all the other servers also. Might be redundant.
+					changeNicks(newnick);
+					nick = newnick;
+					socket.emit('nick', nick);
+				}
+			});
+
 		} else {
 			client.join('#'+id);
 		}
@@ -74,19 +85,22 @@ io.sockets.on('connection', function(socket) {
 	});
 	
 	socket.emit('nick', nick);
-	socket.on('nick', function(n) {
+	socket.on('nick', changeNicks);
+
+	function changeNicks(n) {
 		var i;
-		nick = n;
+//		console.log('Change Nicks called with', n, "currently", nick);
+//		nick = n;
 		for(i in clients) {
-			console.log("Sending NICK message", nick);
-			clients[i].send('NICK', nick);
+//			console.log("Sending NICK message", nick);
+			clients[i].send('NICK', n);
 		}
 		nicks[sid] = nick;
-	});
+	};
 	
 	socket.on('part', function(id) {
 		var client;
-		console.log("Parting", id);
+//		console.log("Parting", id);
 		if((client = clients[irc.getServer(id)])) {
 			client.part("#" + id);
 		}
