@@ -32,7 +32,7 @@ server.listen(7777);
 io.set('log level', 1);
 io.sockets.on('connection', function(socket) {
 	var clients = {},
-		sid = cookie.parse(socket.handshake.headers.cookie)['connect.sid'],
+		sid = cookie.parse(socket.handshake.headers.cookie || '')['connect.sid'],
 		nick = nicks[sid] || 'guest' + Math.floor(Math.random() * 1000);
 		nicks[sid] = nick;
 		
