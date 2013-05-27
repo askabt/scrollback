@@ -4897,7 +4897,19 @@ Stream.message = function(message) {
 			message.text = format(message.text);
 			el = [
 				[ "span", {
-					'class': 'scrollback-message-nick'
+					'class': 'scrollback-message-nick',
+					onmouseout: function() {
+						console.log('mouseout');
+						if(str.userStyle) str.userStyle.parent.removeChild(str.userStyle);
+ 					},
+ 					onmouseover: function() {
+ 						var ucss={};
+						console.log('mouseout');
+ 						ucss['.scrollback-users-' + formatName(message.from)] = {
+							background: hashColor(message.from)
+ 						}
+ 						str.userStyle = addStyles(ucss);
+					}
 				}, message.from ],
 				[ "span", { 'class': 'scrollback-message-separator'}, ' • '],
 				[ "span", { 'class': 'scrollback-message-text'}, message.text ]
@@ -4923,7 +4935,7 @@ Stream.message = function(message) {
 	el = JsonML.parse(["div", {
 		'class': 'scrollback-message scrollback-message-' + message.type,
 		'style': { 'borderLeftColor': hashColor(message.from) },
-		'data-time': message.time
+		'data-time': message.time, 'data-from': formatName(message.from)
 	}].concat(el));
 	bot = str.log.lastChild;
 
