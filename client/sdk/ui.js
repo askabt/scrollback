@@ -248,7 +248,7 @@ Stream.message = function(message) {
 	bot = str.log.lastChild;
 
 	while(
-		bot && bot.getAttribute('data-time') > message.time - estimatedTime
+		bot && bot.getAttribute('data-time') > message.time /*- estimatedTime */
 	){
 		pos = bot;
 		bot = bot.previousSibling;
