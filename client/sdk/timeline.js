@@ -59,6 +59,7 @@ Stream.prototype.renderTimeline = function() {
 		color = msg.style.borderLeftColor; // Yuck.
 		buckets[i].colors[color] = (buckets[i].colors[color] || 0) + 1;
 		buckets[i].n += 1;
+		buckets[i].from = msg.getAttribute('data-from');
 		if(buckets[i].n > max) max = buckets[i].n;
 		msg = msg.nextSibling;
 	}
@@ -69,7 +70,7 @@ Stream.prototype.renderTimeline = function() {
 				top: (i*h) + 'px'
 			}}];
 			for(color in buckets[i].colors) {
-				r.push(["div", {'class': 'scrollback-tread-dot', style: {
+				r.push(["div", {'class': 'scrollback-tread-dot ' + 'scrollback-users-' + buckets[i].from, style: {
 					background: color, height: h + 'px',
 					width: (buckets[i].colors[color]*18/max) + 'px'
 				}}]);

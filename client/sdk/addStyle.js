@@ -55,4 +55,6 @@ var addStyles = function(style) {
 	} else {
 		el.appendChild(document.createTextNode(css));
 	}
+
+	return el;
 };

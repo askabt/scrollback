@@ -158,7 +158,7 @@ Stream.prototype.send = function (){
 Stream.prototype.rename = function() {
 	var n = this.nick.value;
 	socket.emit('nick', n);
-	Stream.updateNicks(n);
+//	Stream.updateNicks(n);
 };
 
 Stream.prototype.select = function() {
@@ -183,6 +183,8 @@ Stream.message = function(message) {
 	var estimatedTime = Math.min(3000 * (message.text||'').length / 5, 5000),
 		name, color='#666';
 	
+
+	//console.log(message.type+" : "+ message.text);
 	function format(text) {
 		// do something more interesting next time.
 		return text;
@@ -203,6 +205,11 @@ Stream.message = function(message) {
 	) {
 		str.titleText.innerHTML = ' ▸ ' + message.from + ' • ' + message.text;
 	}
+
+	function formatName(name) {
+		// TODO
+		return name;
+	}
 	
 	switch(message.type) {
 		case 'text':
@@ -216,7 +223,17 @@ Stream.message = function(message) {
 			}
 			
 			el = [[ "span", {
-				'class': 'scrollback-message-nick'
+				'class': 'scrollback-message-nick',
+				onmouseout: function() {
+					if(str.userStyle) str.userStyle.parentNode.removeChild(str.userStyle);
+					},
+				onmouseover: function() {
+				var ucss = {".scrollback-tread-dot": {background: "#666 !important"}};
+					ucss[ ".scrollback-users-" + formatName(message.from)] = {
+						"background": hashColor(message.from) + " !important",
+					};
+					str.userStyle = addStyles(ucss);
+				}
 			}, message.from ],
 			[ "span", {
 				'class': 'scrollback-message-separator', 'style': 'color:'+color
@@ -243,7 +260,7 @@ Stream.message = function(message) {
 	el = JsonML.parse(["div", {
 		'class': 'scrollback-message scrollback-message-' + message.type,
 		'style': { 'borderLeftColor': hashColor(message.from) },
-		'data-time': message.time
+		'data-time': message.time, 'data-from': formatName(message.from)
 	}].concat(el));
 	bot = str.log.lastChild;
 
@@ -292,6 +309,7 @@ Stream.updateNicks = function(n) {
 	for(i in streams) {
 		stream = streams[i];
 		stream.nick.value = n;
+//		console.log(n);
 	}
 	nick = n;
 };
