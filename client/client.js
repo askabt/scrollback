@@ -4833,6 +4833,7 @@ Stream.prototype.show = function() {
 };
 
 Stream.prototype.send = function (){
+	if(!this.text.value) return;
 	var message = {
 		from: nick,
 		to: this.id,
@@ -4869,7 +4870,9 @@ Stream.prototype.ready = function() {
 // ---- Static methods ----
 
 Stream.message = function(message) {
-	var el, str, bot, hidden, i, j;
+	var el, str, bot = null, pos = null, hidden, i, j;
+	var estimatedTime = Math.min(3000 * (message.text||'').length / 5, 5000),
+		name, color='#666';
 	
 	function format(text) {
 		// do something more interesting next time.
@@ -4895,6 +4898,7 @@ Stream.message = function(message) {
 	switch(message.type) {
 		case 'text':
 			message.text = format(message.text);
+<<<<<<< HEAD
 			el = [
 				[ "span", {
 					'class': 'scrollback-message-nick',
@@ -4914,6 +4918,24 @@ Stream.message = function(message) {
 				[ "span", { 'class': 'scrollback-message-separator'}, ' • '],
 				[ "span", { 'class': 'scrollback-message-text'}, message.text ]
 			];
+=======
+			name=message.text.match(
+				/^(\@?)([a-zA-Z_\\\[\]\{\}\^\`\|][a-zA-Z0-9_\-\\\[\]\{\}\^\`\|]+)( |\:)/
+			);
+			
+			if(name && (name[2].length !== 0) && (name[1] == '@' || name[3] == ':')) {
+				color=hashColor(name[2]);
+			}
+			
+			el = [[ "span", {
+				'class': 'scrollback-message-nick'
+			}, message.from ],
+			[ "span", {
+				'class': 'scrollback-message-separator', 'style': 'color:'+color
+			}, ' • '],
+			[ "span", { 'class': 'scrollback-message-text'}, message.text ]];
+
+>>>>>>> 925bd0259d41854ced117933c2554e2d31477432
 			break;
 		case 'join':
 			el = [["span", message.from + ' joined.']];
@@ -4939,12 +4961,13 @@ Stream.message = function(message) {
 	}].concat(el));
 	bot = str.log.lastChild;
 
-	// rearranges messages estimating time to type them
-	// var estimatedTime = Math.min(3000 * message.text.length / 5, 5000);
-	while(bot && bot.getAttribute('data-time') > message.time /* - estimatedTime */ && bot.previousSibling) {
+	while(
+		bot && bot.getAttribute('data-time') > message.time - estimatedTime
+	){
+		pos = bot;
 		bot = bot.previousSibling;
 	}
-	str.log.insertBefore(el, bot && (bot.previousSibling? bot.nextSibling: bot));
+	str.log.insertBefore(el, pos);
 
 	hidden = $$(str.log, "scrollback-message-hidden");
 	for(i=0, l=hidden.length; i<l; i++) {
@@ -5010,6 +5033,9 @@ Stream.position = function() {
 // --- color for names ---
 
 function hashColor(name) {
+	name = name.toLowerCase().replace(/[^a-z0-9]+/g,' ').replace(/^\s+/g,'').replace(/\s+$/g,''); 
+	 // nicks that differ only by case or punctuation should get the same color.
+	
 	function hash(s) {
 		var h=1, i, l;
 		for (i=0, l=s.length; i<l; i++) {
