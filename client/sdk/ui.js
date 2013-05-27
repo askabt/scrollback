@@ -205,6 +205,11 @@ Stream.message = function(message) {
 	) {
 		str.titleText.innerHTML = ' ▸ ' + message.from + ' • ' + message.text;
 	}
+
+	function formatName(name) {
+		// TODO
+		return name;
+	}
 	
 	switch(message.type) {
 		case 'text':
@@ -218,7 +223,17 @@ Stream.message = function(message) {
 			}
 			
 			el = [[ "span", {
-				'class': 'scrollback-message-nick'
+				'class': 'scrollback-message-nick',
+				onmouseout: function() {
+					if(str.userStyle) str.userStyle.parentNode.removeChild(str.userStyle);
+					},
+				onmouseover: function() {
+				var ucss = {".scrollback-tread-dot": {background: "#666 !important"}};
+					ucss[ ".scrollback-users-" + formatName(message.from)] = {
+						"background": hashColor(message.from) + " !important",
+					};
+					str.userStyle = addStyles(ucss);
+				}
 			}, message.from ],
 			[ "span", {
 				'class': 'scrollback-message-separator', 'style': 'color:'+color
@@ -245,7 +260,7 @@ Stream.message = function(message) {
 	el = JsonML.parse(["div", {
 		'class': 'scrollback-message scrollback-message-' + message.type,
 		'style': { 'borderLeftColor': hashColor(message.from) },
-		'data-time': message.time
+		'data-time': message.time, 'data-from': formatName(message.from)
 	}].concat(el));
 	bot = str.log.lastChild;
 
