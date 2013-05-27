@@ -7,11 +7,6 @@
         <meta name="viewport" content="width=device-width">
 		<link href='http://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css' />
         <link rel="stylesheet" href="style.css">
-		
-		<style> html, body, input, button, select, textarea {
-			font-family: "Open Sans", sans-serif;
-			font-weight: 300;
-		} </style>
 		<meta http-equiv="X-UA-Compatible" content="IE=Edge">
 	</head>
 	
@@ -42,10 +37,12 @@
 			<a name='#intro'><h1>In brief</h1>
 			<p>If your community uses text chat 
 				but has outgrown IRC, Skype, and Facebook<br />
-				embed Scrollback on your site 
+				embed a Scrollback chatstream on your site 
 				to let the conversation flow!</p>
-			<p>To embed scrollback, copy the code below and change the name of your
-				community (highlighted in yellow).</p>
+			<p>To embed scrollback, copy this code into your page and change the
+				name of your chatstream (highlighted in yellow).</p>
+			<p>If your chatstream doesn't exist, it will be created
+				automatically.</p>
 				<pre><code>&lt;script&gt;
 window.scrollback = {
   streams: [<span class='highlight'>'trekkies'</span>], // Change this: Your chat room(s).
@@ -58,8 +55,6 @@ window.scrollback = {
 scrollback.host=h;d.body.appendChild(e);}(document,'http://scrollback.io'));
 &lt;/script&gt;</code></pre>
 				
-				<p>If your community doesn't exist, it will be created
-				automatically.</p>
 				
 				<h1>Why scrollback</h1>
 
@@ -631,12 +626,12 @@ window.scrollback = {
 };
 
 // Don't change below this line ------------------------------------------------
-(function(d,h,e){e=d.createElement('script');e.async=1;e.src=h+'/client.min.js';
-scrollback.host=h;d.body.appendChild(e);}(document,'http://'+location.host));
+//(function(d,h,e){e=d.createElement('script');e.async=1;e.src=h+'/client.min.js';
+//scrollback.host=h;d.body.appendChild(e);}(document,'http://'+location.host));
 </script>
-		
 		<!--
-		<script src="client.min.js"></script>
+		
+		-->
 		
 		<script src="/socket.io/socket.io.js"></script>
 		
@@ -651,7 +646,6 @@ scrollback.host=h;d.body.appendChild(e);}(document,'http://'+location.host));
 		<script src="sdk/timeline.js"></script>
 		<script src="sdk/css.js"></script>
 		<script src="sdk/net.js"></script>
-		-->
 		
 	</body>
 </html>

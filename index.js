@@ -6,6 +6,7 @@ var irc = require("./irc.js"),
 	archive = require("./archive.js")
 //	, cookie = require("cookie")
 //	, user = require("./user.js")
+	, test = require("client/test.html")
 	;
 
 app.use(express.logger());
@@ -13,8 +14,7 @@ app.use(express.static(__dirname + '/client'));
 app.use(express.cookieParser());
 app.use(express.session({secret: "syugeheijak"}));
 app.use(express.bodyParser());
-app.get('/:stream', function(req, res) {
-	res.writeHead(302, {Location: "/index.html?stream=" + req.params.stream});
+app.get('/t/:stream', function(req, res) {
 	res.end();
 });
 //app.post('/:login', function(req, res) {
@@ -81,10 +81,6 @@ io.sockets.on('connection', function(socket) {
 			console.log("Sending NICK message", nick);
 			clients[i].send('NICK', nick);
 		}
-	});
-	
-	socket.on('login', function() {
-		
 	});
 	
 	socket.on('part', function(id) {

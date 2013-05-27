@@ -40,6 +40,8 @@ Stream.prototype.renderThumb = function() {
 		msg = msg.previousSibling;
 	}
 	
+	thumbBottom = Math.min(thumbBottom, log.clientHeight);
+	
 	this.thumb.style.top = thumbTop + 'px';
 	this.thumb.style.height = (thumbBottom - thumbTop +1) + 'px';
 };
