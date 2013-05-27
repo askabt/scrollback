@@ -222,7 +222,6 @@ Stream.message = function(message) {
 				'class': 'scrollback-message-separator', 'style': 'color:'+color
 			}, ' • '],
 			[ "span", { 'class': 'scrollback-message-text'}, message.text ]];
-
 			break;
 		case 'join':
 			el = [["span", message.from + ' joined.']];
@@ -325,6 +324,8 @@ function hashColor(name) {
 	
 	function hash(s) {
 		var h=1, i, l;
+		s = s.toLowerCase().replace(/[^a-z0-9]+/g,' ').replace(/^\s+/g,'').replace(/\s+$/g,''); 
+		// nicks that differ only by case or punctuation should get the same color.
 		for (i=0, l=s.length; i<l; i++) {
 			h = (Math.abs(h<<(7+i))+s.charCodeAt(i))%1530;
 		}

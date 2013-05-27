@@ -4,9 +4,10 @@ var irc = require("./irc.js"),
 	server = require("http").createServer(app),
 	io = require("socket.io").listen(server),
 	archive = require("./archive.js")
-//	, cookie = require("cookie")
+	, cookie = require("cookie")
 //	, user = require("./user.js")
-	, test = require("client/test.html")
+	, test = require('fs').readFileSync(__dirname + "/client/test.html"),
+	nicks = {}
 	;
 
 app.use(express.logger());
@@ -15,6 +16,7 @@ app.use(express.cookieParser());
 app.use(express.session({secret: "syugeheijak"}));
 app.use(express.bodyParser());
 app.get('/t/:stream', function(req, res) {
+	res.writeHead('/test#')
 	res.end();
 });
 //app.post('/:login', function(req, res) {
@@ -30,12 +32,10 @@ server.listen(7777);
 io.set('log level', 1);
 io.sockets.on('connection', function(socket) {
 	var clients = {},
-		nick = 'guest' + Math.floor(Math.random() * 1000)
-//		, sid = cookie.parse(socket.handshake.headers.cookie)['connect.sid']
-		;
+		sid = cookie.parse(socket.handshake.headers.cookie)['connect.sid'],
+		nick = nicks[sid] || 'guest' + Math.floor(Math.random() * 1000);
+		nicks[sid] = nick;
 		
-//		console.log("Connection from SID", sid);
-	
 	/*
 	 * message: { from: , to: , text: type: time: }
 	 */
@@ -81,6 +81,7 @@ io.sockets.on('connection', function(socket) {
 			console.log("Sending NICK message", nick);
 			clients[i].send('NICK', nick);
 		}
+		nicks[sid] = nick;
 	});
 	
 	socket.on('part', function(id) {
