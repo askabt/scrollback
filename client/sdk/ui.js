@@ -262,7 +262,7 @@ Stream.prototype.renderTimeline = function() {
 // ---- Static methods ----
 
 Stream.message = function(message) {
-	var el, str, bot, hidden, i, j;
+	var el, str, bot, hidden, i, j,name,color="#666";
 	
 	console.log('message', message);
 	
@@ -275,11 +275,21 @@ Stream.message = function(message) {
 	switch(message.type) {
 		case 'text':
 			message.text = format(message.text);
+			
+
+			name=message.text.match(/^[@|:][\w]+ /);
+			
+			if(name&&name[0].length!==0){
+				color=hashColor(name[0].substr(1,name[0].length-1));
+				console.log(message.text,name[0].substr(1,name[0].length-1)+"-------------------"+name[0],color);
+			}
+
+			
 			el = [
 				[ "span", {
 					'class': 'scrollback-message-nick'
 				}, message.from ],
-				[ "span", { 'class': 'scrollback-message-separator'}, ' • '],
+				[ "span", { 'class': 'scrollback-message-separator','style':'color:'+color}, ' • '],
 				[ "span", { 'class': 'scrollback-message-text'}, message.text ]
 			];
 			break;
@@ -318,7 +328,7 @@ Stream.message = function(message) {
 	
 	
 	
-	if(str.stream.className.indexOf('scrollback-stream-hidden') != -1) {
+	if(str.stream.className.indexOf('scrollback-stream-hidden') != -1 && message.type==="textAlign") {
 		console.log('message received while minimized');
 		str.titleText.innerHTML = ' ▸ ' + message.from + ' • ' + message.text;
 	}
@@ -409,6 +419,8 @@ Stream.position = function() {
 function hashColor(name) {
 	function hash(s) {
 		var h=1, i, l;
+		s = s.toLowerCase().replace(/[^a-z0-9]+/g,' ').replace(/^\s+/g,'').replace(/\s+$/g,''); 
+		// nicks that differ only by case or punctuation should get the same color.
 		for (i=0, l=s.length; i<l; i++) {
 			h = (Math.abs(h<<(7+i))+s.charCodeAt(i))%1530;
 		}
