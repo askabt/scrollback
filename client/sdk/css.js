@@ -38,18 +38,8 @@ var css = {
 			top: "0"
 		},
 			".scrollback-title-text":{
-				fontWeight: "normal", color: "#999"
+				fontWeight: "normal"
 			},
-			".scrollback-toolbar": {
-				background: "#eee", height: "40px", top: "40px",
-				display:"none"
-			},
-			".scrollback-toolbtn": {
-				float: "left", height: "40px", lineHeight: "40px",
-				width: "40px", cursor: "pointer", textAlign: "center",
-				borderRadius: "0"
-			},
-			".scrollback-toolbtn:hover": { background: "#fff" },
 		".scrollback-log": {
 			"boxSizing": "border-box", "webkitBoxSizing": "border-box",
 			"mozBoxSizing": "border-box", "msBoxSizing": "border-box",
@@ -57,14 +47,13 @@ var css = {
 			"position": "absolute", "top": "48px",
 			"bottom": "80px", "left": "0", "right": "0",
 			"overflowY": "auto", "overflowX": "hidden",
-			color: "#fff"
 		},
 			".scrollback-message": {
 				"overflow": "hidden", padding: "2px 24px 2px 48px",
 				"transition": "all 0.2s ease-out", textIndent: "-32px",
 				"webkitTransition": "all 0.2s ease-out", "mozTransition": "all 0.2s ease-out",
 				"oTransition": "all 0.2s ease-out", "msTransition": "all 0.2s ease-out",
-				"borderLeft": "4px solid #eee", opacity: 1, height: "auto"
+				"borderLeft": "4px solid transparent", opacity: 1, height: "auto"
 			},
 			".scrollback-message-hidden": {
 				"opacity": 0,
@@ -72,11 +61,8 @@ var css = {
 				"webkitTransition": "all 2s ease-out", "mozTransition": "all 2s ease-out",
 				"oTransition": "all 2s ease-out", "msTransition": "all 2s ease-out",
 			},
-			".scrollback-message-nick": { "color": "#999" },
-			".scrollback-message-separator": { "color": "#666", },
-			".scrollback-message-join, .scrollback-message-part": { "color": "#666", },
 	".scrollback-timeline": {
-		background: "#333", position: "absolute", top: "48px", right: "0", width: "18px",
+		position: "absolute", top: "48px", right: "0", width: "18px",
 		bottom: "80px", zIndex: 9996
 	},
 		".scrollback-tread": {
@@ -86,7 +72,7 @@ var css = {
 			".scrollback-tread-row": { position: "absolute", height: "4px", width: "100%" },
 			".scrollback-tread-dot": { 'float': "right", height: '4px', borderRadius: "0"},
 		".scrollback-thumb": {
-			background: "#000", position: "absolute", left: "0px",
+			position: "absolute", left: "0px",
 			width: "18px", zIndex: 0
 		},
 	".scrollback-send": {
@@ -109,14 +95,13 @@ var css = {
 			outline: "none"
 		},
 		".scrollback-nick": {
-			"left": "8px", "width": "80px", color: "#666",
-			"background": "#ccc"
+			"left": "8px", "width": "80px"
 		},
 		'.scrollback-text-wrap': { "right": "8px", "left": "88px" },
-		".scrollback-text": { width: "100%", background: "#fff", color: "#000" },
+		".scrollback-text": { width: "100%" },
 	".scrollback-poweredby": {
 		position: "absolute", bottom: "4px", right: "16px", height: "16px",
-		width: "121px", background: "url(http://scrollback.io/poweredby.png)"
+		width: "121px"
 	}
 };
 
@@ -156,7 +141,7 @@ themes.light = {
 		},
 		".scrollback-text": { background: "#fff", color: "#000" },
 	".scrollback-poweredby": {
-		background: "url(http://scrollback.io/poweredby.png)"
+		background: "url(http://scrollback.io/poweredby-dk.png)"
 	}
 };
 
@@ -193,6 +178,6 @@ themes.dark = {
 		},
 		".scrollback-text": { background: "#fff", color: "#000" },
 	".scrollback-poweredby": {
-		background: "url(http://scrollback.io/poweredby.png)"
+		background: "url(http://scrollback.io/poweredby-lt.png)"
 	}
 }

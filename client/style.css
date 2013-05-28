@@ -22,50 +22,6 @@ h1, h2, h3, h4, h5, h6 { font-weight: 300; }
 pre { background: #333; color: #fff; font-size: 13px; max-width: 80em;
 margin: 0 auto; padding: 20px; }
 
-#streams {
-	position: absolute;
-	top: 0; left: 0; right: 0; bottom: 0;
-	background: #000;
-	background: -webkit-gradient(radial, 50% 100%, 0, center bottom, 500, from(#f00), to(#000));
-	background: -webkit-radial-gradient(center bottom, circle, #f00 0%, #000 50%);
-	background: -moz-radial-gradient(center bottom, circle, #f00 0%, #000 50%);
-	background: -ms-radial-gradient(center bottom, circle, #f00 0%, #000 50%);
-	background: -o-radial-gradient(center bottom, circle, #f00 0%, #000 50%);
-}
-
-.stream {
-	position: absolute; background: #eee; width: 400px; height: 600px;
-	padding: 20px 20px 60px 20px; bottom: 0px; box-shadow: 0px 0px 8px 0 #000;
-	box-sizing: border-box; -webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box; -ms-box-sizing: border-box;
-	-o-box-sizing: border-box;
-}
-.stream.selected { background: #fff; }
-	.title, .toolbar, .send { height: 40px; }
-	.log {
-		position: absolute; top: 80px; bottom: 40px; left: 0; right: 0;
-		overflow-y: auto; overflow-x: hidden; background: #fff;
-	}
-	.message { overflow: hidden; transition: all 200ms; }
-	.message.hidden { height: 0px; }
-	.message.join, .message.part { color: #999; }
-
-#add, #send { position: fixed; z-index: 9999; }
-#add {
-	top: 100px; left: 0px; width: 200px; height: auto; padding: 8px;
-	transition: all 200ms; background: #eee;
-	box-shadow: 0 0 8px 0 #000;
-}
-#add.hidden { left: -160px; }
-#send { bottom: 0px; left: 0; right: 0; height: 40px; background: transparent; }
-	#send button, #add button { position: absolute; visibility: hidden; }
-	#text { display: block; width: 400px; border: none;
-		box-sizing: border-box; -webkit-box-sizing: border-box;
-		-moz-box-sizing: border-box; -ms-box-sizing: border-box;
-		-o-box-sizing: border-box; padding: 4px 20px; border-radius: 0 0 3px 3px;
-		position: absolute; right: -9999px; box-shadow: 0 0 8px 0 #000; 
-	}
-
 nav {
     background: #333; line-height: 48px; color: #fff;
     overflow: visible;
@@ -92,6 +48,10 @@ header {
     }
     header h1 { padding-top: 64px; font-weight: 300; }
     header h2 { font-weight: 900; }
+
+#hero { text-align: center; }
+#hero h1 { margin: 1.5em 0 0.5em 0; }
+#hero img { border-bottom: 1px solid #000; }
 
 footer {
     background: #eee; color: #666; font-size: 75%;
@@ -148,7 +108,7 @@ ul.grid { list-style: none; padding: 0; margin: 0; }
 
 .container {
     max-width: 960px; width: 100%; margin: 0 auto; position: relative;
-    clear: both; padding: 0 24px;
+    clear: both;
     -moz-box-sizing: border-box; -webkit-box-sizing: border-box;
     -ms-box-sizing: border-box; -o-box-sizing: border-box;
     box-sizing: border-box;

@@ -25,22 +25,27 @@
 						<li><a href="#intro">In brief</a></li>
 						<li><a href="#signup">Get scrollback</a></li>
 						<li><a href="#signup">Why we built it</a></li>
-						<li><a href="#signup">Fork us</a></li>
+						<li><a href="http://github.com/askabt/scrollback">Fork us</a></li>
 					</ul>
 				</div>
 			</div>
 		</nav>
 		
 		<div class='container clearfix'>
+			<div id="hero">
+				<h1>Beautiful text chat for your community website.</h1>
+				<img src='img/hero.png' style='max-width:100%'/>
+			</div>
 			<div class='box span12'>
 			<a name='#intro'><h1>In brief</h1>
 			<p>Give your community a place to catch up - on your website.</p>
 			<p>Scrollback is a new </p>
 			<p>If you have an IRC channel, use Scrollback to bring it to your
 				wider community on the web.</p>
-			<p>To embed a μforum, paste the code below on to your page and
-				change the name of your forum (highlighted in yellow).</p>
-			<p>If your forum doesn't exist, it will be created automatically.</p>
+			<p>To embed scrollback rooms, paste the code below on to your page and
+				change the name (highlighted in yellow). Names should have only
+				alphabets, numbers and hyphens.</p>
+			<p>If your room doesn't exist, it will be created automatically.</p>
 				<pre><code>&lt;script&gt;
 window.scrollback = {
   streams: [<span class='highlight'>'trekkies'</span>], // Change this: Your chat room(s).
@@ -585,6 +590,10 @@ scrollback.host=h;d.body.appendChild(e);}(document,'http://scrollback.io'));
 			</div>
 		</div>
 
+		<script src="http://code.jquery.com/jquery.min.js"></script>
+		<script src="main.js"></script>
+		
+		
 <script>
 window.scrollback = {
 	streams: ["scrollback", "ubuntu"],      // Change this: Array of rooms.
@@ -593,10 +602,10 @@ window.scrollback = {
 };
 
 // Don't change below this line ------------------------------------------------
-// (function(d,h,e){e=d.createElement('script');e.async=1;e.src=h+'/client.min.js';
-// scrollback.host=h;d.body.appendChild(e);}(document,'http://'+location.host));
+ (function(d,h,e){e=d.createElement('script');e.async=1;e.src=h+'/client.min.js';
+ scrollback.host=h;d.body.appendChild(e);}(document,'http://'+location.host));
 </script>
-
+<!--
 		<script src="/socket.io/socket.io.js"></script>
 		
 		<script src="sdk/addEvent.js"></script>
@@ -610,6 +619,6 @@ window.scrollback = {
 		<script src="sdk/timeline.js"></script>
 		<script src="sdk/css.js"></script>
 		<script src="sdk/net.js"></script>
-		
+-->
 	</body>
 </html>
