@@ -129,7 +129,8 @@ Stream.prototype.close = function (){
 };
 
 Stream.prototype.hide = function() {
-	this.stream.className = this.stream.className + " scrollback-stream-hidden";
+	this.stream.className = this.stream.className.replace(
+		/\sscrollback-stream-selected/g, '') + " scrollback-stream-hidden";
 	this.hidebtn.innerHTML = '‾';
 };
 
@@ -215,10 +216,10 @@ Stream.message = function(message) {
 		case 'text':
 			message.text = format(message.text);
 			name=message.text.match(
-				/^(\@?)([a-zA-Z_\\\[\]\{\}\^\`\|][a-zA-Z0-9_\-\\\[\]\{\}\^\`\|]+)( |\:)/
+				/^(\@?)([a-zA-Z_\\\[\]\{\}\^\`\|][a-zA-Z0-9_\-\\\[\]\{\}\^\`\|]+)( |\:|\,)/
 			);
 			
-			if(name && (name[2].length !== 0) && (name[1] == '@' || name[3] == ':')) {
+			if(name && (name[2].length !== 0) && (name[1] == '@' || name[3] != ' ')) {
 				color=hashColor(name[2]);
 			}
 			

@@ -33,8 +33,10 @@ io.set('log level', 1);
 io.sockets.on('connection', function(socket) {
 	var clients = {},
 		sid = cookie.parse(socket.handshake.headers.cookie || '')['connect.sid'],
-		nick = nicks[sid] || 'guest' + Math.floor(Math.random() * 1000);
+		nick = nicks[sid] || 'guest' + Math.floor(Math.random() * 10000);
 		nicks[sid] = nick;
+		
+		console.log(new Date() + "New connection from " + nick);
 		
 	/*
 	 * message: { from: , to: , text: type: time: }
@@ -53,22 +55,25 @@ io.sockets.on('connection', function(socket) {
 		var server = irc.getServer(id), client = clients[server];
 		if(!client) {
 			clients[server] = client = irc.connect(server, nick, function(message) {
+				if(client.requestedNick && message.from == client.currentNick) {
+					message.from = client.requestedNick;
+				}
 				socket.emit('message', message);
 			});
+			client.currentNick = nick;
+			
 			client.addListener('registered', function() {
 				client.join('#'+id);
 			});
-			client.addListener("nick", function(oldnick,newnick,channels,message) {
-				console.log("nick change seen", arguments);
-				if(oldnick == nick) {
-					console.log("My own nick has changed!",oldnick,nick,newnick);
+			client.addListener("nick", function(oldnick, newnick) {
+				if(oldnick == client.currentNick) {
+					client.currentNick = newnick;
+					if(newnick == client.requestedNick) client.requestedNick = null;
+					console.log(server, "says:", oldnick, "changed to", newnick);
 					// Go change all the other servers also. Might be redundant.
 					changeNicks(newnick);
-					nick = newnick;
-					socket.emit('nick', nick);
 				}
 			});
-
 		} else {
 			client.join('#'+id);
 		}
@@ -88,14 +93,18 @@ io.sockets.on('connection', function(socket) {
 	socket.on('nick', changeNicks);
 
 	function changeNicks(n) {
-		var i;
-//		console.log('Change Nicks called with', n, "currently", nick);
-//		nick = n;
+		var i, pendingRequests = false;
 		for(i in clients) {
-//			console.log("Sending NICK message", nick);
-			clients[i].send('NICK', n);
+			if((clients[i].requestedNick || clients[i].currentNick) != n) {
+				console.log("asking",i,"to change nick to",n);
+				clients[i].send('NICK', n);
+				clients[i].requestedNick = n;
+				pendingRequests = true;
+			}
 		}
+		nick = n;
 		nicks[sid] = nick;
+		socket.emit('nick', nick); // Sometimes the server initiates the change.
 	};
 	
 	socket.on('part', function(id) {
