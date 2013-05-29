@@ -1,9 +1,5 @@
-var db = require('mysql').createConnection({
-	host     : 'localhost',
-	user     : 'askabt',
-	password : 'askabt',
-	database : 'askabt'
-});
+var config = require('./config.js');
+var db = require('mysql').createConnection(config.mysql);
 	
 exports.add = function(message) {
 //	console.log("Archiving ", message);
