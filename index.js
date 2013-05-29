@@ -118,7 +118,7 @@ io.sockets.on('connection', function(socket) {
 	socket.on('disconnect', function() {
 		var i;
 		for(i in clients) {
-			clients[i].disconnect();
+			clients[i].disconnect("Scrollback says bye..........");
 			delete clients[i]; // Speed up GC?
 		}
 	});
