@@ -47,7 +47,7 @@ Stream.prototype.renderThumb = function() {
 };
 
 Stream.prototype.renderTimeline = function() {
-	var buckets = [], n=128, h=this.tread.clientHeight/n, i,
+	var buckets = [], h=1, n=this.tread.clientHeight, i,
 		first = this.firstMessageAt, duration=this.lastMessageAt-first,
 		msg = this.log.firstChild, color, r, ml = ["div"], max=0, frac;
 	
@@ -55,26 +55,22 @@ Stream.prototype.renderTimeline = function() {
 	
 	while(msg) {
 		i = Math.floor((msg.getAttribute('data-time') - first)*n / duration);
-		if(!buckets[i]) buckets[i] = {colors: [], n: 0}
-		color = msg.style.borderLeftColor; // Yuck.
-		buckets[i].colors[color] = (buckets[i].colors[color] || 0) + 1;
+		if(!buckets[i]) buckets[i] = {nicks: {}, n: 0}
+		buckets[i].nicks[msg.getAttribute('data-from')] = true;
 		buckets[i].n += 1;
-		buckets[i].from = msg.getAttribute('data-from');
 		if(buckets[i].n > max) max = buckets[i].n;
 		msg = msg.nextSibling;
 	}
 	
 	for(i=0; i<n; i++) {
 		if(buckets[i]) {
-			r = ["div", {'class': 'scrollback-tread-row', style: {
-				top: (i*h) + 'px'
-			}}];
-			for(color in buckets[i].colors) {
-				r.push(["div", {'class': 'scrollback-tread-dot ' + 'scrollback-users-' + buckets[i].from, style: {
-					background: color, height: h + 'px',
-					width: (buckets[i].colors[color]*18/max) + 'px'
-				}}]);
-			}
+			r = ["div", {
+				'class': 'scrollback-tread-row scrollback-user-' +
+					Object.keys(buckets[i].nicks).join(' scrollback-user-'),
+				style: {
+					top: (i*h) + 'px', width: (buckets[i].n*18/max) + 'px'
+				}
+			}];
 			ml.push(r);
 		}
 	}

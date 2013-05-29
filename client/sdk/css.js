@@ -69,8 +69,12 @@ var css = {
 			position: "absolute", top: 0, left: 0, right: 0, bottom: 0,
 			zIndex: 1
 		},
-			".scrollback-tread-row": { position: "absolute", height: "4px", width: "100%" },
-			".scrollback-tread-dot": { 'float': "right", height: '4px', borderRadius: "0"},
+			".scrollback-tread-row": {
+				position: "absolute", height: "1px", right: "0",
+				"transition": "all .2s linear",
+				"webkitTransition": "all 0.2s linear", "mozTransition": "all 0.2s linear",
+				"oTransition": "all 0.2s linear", "msTransition": "all 0.2s linear"
+			},
 		".scrollback-thumb": {
 			position: "absolute", left: "0px",
 			width: "18px", zIndex: 0
@@ -133,6 +137,9 @@ themes.light = {
 		".scrollback-thumb": {
 			background: "#999"
 		},
+		".scrollback-tread-row": {
+			background: "#000"
+		},
 		".scrollback-nick, .scrollback-text": {
 			"border": "1px solid #ccc",
 		},
@@ -170,6 +177,9 @@ themes.dark = {
 	".scrollback-timeline": {
 		background: "#333",
 	},
+		".scrollback-tread-row": {
+			background: "#fff"
+		},
 		".scrollback-thumb": {
 			background: "#000"
 		},

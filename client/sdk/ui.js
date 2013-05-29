@@ -158,9 +158,9 @@ Stream.prototype.ready = function() {
 // ---- Static methods ----
 
 Stream.message = function(message) {
-	var el, str, bot = null, pos = null, hidden, i, j;
+	var el, str, bot = null, pos = null;
 	var estimatedTime = Math.min(3000 * (message.text||'').length / 5, 5000),
-		name, color='#666';
+		name, color='#666', start = new Date();
 	
 
 	//console.log(message.type+" : "+ message.text);
@@ -207,9 +207,10 @@ Stream.message = function(message) {
 					if(str.userStyle) str.userStyle.parentNode.removeChild(str.userStyle);
 					},
 				onmouseover: function() {
-				var ucss = {".scrollback-tread-dot": {background: "#666 !important"}};
-					ucss[ ".scrollback-users-" + formatName(message.from)] = {
+				var ucss = {".scrollback-tread-row": {width: "0 !important"}};
+					ucss[ ".scrollback-user-" + formatName(message.from)] = {
 						"background": hashColor(message.from) + " !important",
+						width: "100% !important"
 					};
 					str.userStyle = addStyles(ucss);
 				}
@@ -241,7 +242,13 @@ Stream.message = function(message) {
 		'style': { 'borderLeftColor': hashColor(message.from) },
 		'data-time': message.time, 'data-from': formatName(message.from)
 	}].concat(el));
-	bot = str.log.lastChild;
+	if(str.lastInsertPos && str.lastInsertPos.getAttribute('data-time') > message.time) {
+		//console.log("Starting at last insert pos");
+		bot = str.lastInsertPos;
+	} else {
+		//console.log("Starting at end.");
+		bot = str.log.lastChild;
+	}
 
 	while(
 		bot && bot.getAttribute('data-time') > message.time /*- estimatedTime */
@@ -249,24 +256,26 @@ Stream.message = function(message) {
 		pos = bot;
 		bot = bot.previousSibling;
 	}
+	str.lastInsertPos = pos;
 	str.log.insertBefore(el, pos);
 
-	hidden = $$(str.log, "scrollback-message-hidden");
-	for(i=0, l=hidden.length; i<l; i++) {
-		str.log.removeChild(hidden[i]);
-	}
-	
-	if(!str.scrolledUp) {
-		str.log.scrollTop = str.log.scrollHeight;
-	} else {
-		str.log.scrollTop += el.clientHeight;
-	}
-	
+	str.pendingScroll = (str.pendingScroll || 0) + el.clientHeight;
+
 	if(str.scrollTimer) clearTimeout(str.scrollTimer);
 	str.scrollTimer = setTimeout(function() {
+		var i, l, hidden = $$(str.log, "scrollback-message-hidden");
+		for(i=0, l=hidden.length; i<l; i++) {
+			str.log.removeChild(hidden[i]);
+		}
+		
+		str.log.scrollTop += str.pendingScroll;
+		str.pendingScroll = 0;
+		
 		if(str.stream.className.indexOf('scrollback-stream-hidden') == -1)
 			str.renderTimeline();
 	}, 100);
+	
+	//console.log("Message insertion took " + (new Date() - start) + 'ms');
 };
 
 Stream.get = function(id) {
