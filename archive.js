@@ -55,12 +55,12 @@ exports.get = function(options, callback) {
 	
 	if(desc) query = "SELECT * FROM (" + query + ") r ORDER BY time ASC";
 	
-	console.log(query, params);
+	//console.log(query, params);
 	db.query(query, params, function(err, data) {
 		if(err) {
 			console.log(err); return;
 		}
-		console.log("RESULTS:", data.length);
+		//console.log("RESULTS:", data.length);
 		if(limit && data.length < limit) {
 			(desc? data.unshift: data.push)({
 				type: "notice", from: '', to: options.to || '',

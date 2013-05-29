@@ -3,15 +3,15 @@ var irc = require("./irc.js"),
 	app = express(),
 	server = require("http").createServer(app),
 	io = require("socket.io").listen(server),
-	archive = require("./archive.js")
-	, cookie = require("cookie")
+	archive = require("./archive.js"),
+	cookie = require("cookie")
 //	, user = require("./user.js")
 	, test = require('fs').readFileSync(__dirname + "/client/test.html"),
-	nicks = {}
+	nicks = {},
+	users={}
 	;
 
-app.use(express.logger());
-app.use(express.static(__dirname + '/client'));
+//app.use(express.logger());
 app.use(express.cookieParser());
 app.use(express.session({secret: "syugeheijak"}));
 app.use(express.bodyParser());
@@ -19,6 +19,8 @@ app.get('/t/:stream', function(req, res) {
 	res.writeHead('/test#')
 	res.end();
 });
+app.use(express.cookieParser());
+app.use(express.static(__dirname + '/client'));
 //app.post('/:login', function(req, res) {
 //	user.get(req.body, function(user) {
 //		req.session.user = user;
@@ -35,12 +37,18 @@ io.sockets.on('connection', function(socket) {
 		sid = cookie.parse(socket.handshake.headers.cookie || '')['connect.sid'],
 		nick = nicks[sid] || 'guest' + Math.floor(Math.random() * 10000);
 		nicks[sid] = nick;
-		
-		console.log(new Date() + "New connection from " + nick);
-		
-	/*
-	 * message: { from: , to: , text: type: time: }
-	 */
+
+		console.log(sid);
+	console.log("CurrentNick="+nick);
+	if(users[nick] && users[nick].clients!==undefined){
+		clients=users[nick].clients;
+		if(users[nick].outTimeout!==undefined){
+			clearTimeout(users[nick].outTimeout);
+		}
+	}
+	else{
+		console.log("new user");
+	}
 	
 	socket.on('message', function(message) {
 		if(!(client = clients[irc.getServer(message.to)])) {
@@ -54,6 +62,7 @@ io.sockets.on('connection', function(socket) {
 		if(!id) return;
 		var server = irc.getServer(id), client = clients[server];
 		if(!client) {
+//			console.log("client obj not found for the channel" +id+" and server "+server);
 			clients[server] = client = irc.connect(server, nick, function(message) {
 				if(client.requestedNick && message.from == client.currentNick) {
 					message.from = client.requestedNick;
@@ -69,14 +78,29 @@ io.sockets.on('connection', function(socket) {
 				if(oldnick == client.currentNick) {
 					client.currentNick = newnick;
 					if(newnick == client.requestedNick) client.requestedNick = null;
-					console.log(server, "says:", oldnick, "changed to", newnick);
+//					console.log(server, "says:", oldnick, "changed to", newnick);
 					// Go change all the other servers also. Might be redundant.
-					changeNicks(newnick);
+					 changeNicks(newnick);
 				}
 			});
 		} else {
+//			console.log("client obj found for the channel" +id+" and server "+server);
+			console.log("joining "+id);
+
+
+			//ugly hack to handle the request to join being made before getting registered,
+			client.addListener('registered', function() {
+				client.join('#'+id);
+				socket.emit("message",{type:"join",to:id,from:nick,text:"text",time:new Date().getTime()});
+			});
+
+
 			client.join('#'+id);
+			socket.emit("message",{type:"join",to:id,from:nick,text:"teaxt",time:new Date().getTime()});
 		}
+		users[nick]={};
+		users[nick].clients=clients;
+	//	console.log("joined",users[nick].clients);
 	});
 	
 	socket.on('get', function(qo) {
@@ -94,6 +118,10 @@ io.sockets.on('connection', function(socket) {
 
 	function changeNicks(n) {
 		var i, pendingRequests = false;
+		var oldNick=nicks[sid];
+
+
+		console.log("request to change the nick from "+nicks[sid]+" to "+n);
 		for(i in clients) {
 			if((clients[i].requestedNick || clients[i].currentNick) != n) {
 				console.log("asking",i,"to change nick to",n);
@@ -104,6 +132,14 @@ io.sockets.on('connection', function(socket) {
 		}
 		nick = n;
 		nicks[sid] = nick;
+
+		if(oldNick!==n){
+			//console.log("changing the nick of sid to new one",nicks[sid],users[oldNick]);
+			users[nick]={};
+			//console.log("creating new user entry for the new nick",users[nick]);
+			users[nick].clients=users[oldNick].clients;
+			//console.log("copying the client objects from the only user object to the new ones.",users[nick]);
+		}
 		socket.emit('nick', nick); // Sometimes the server initiates the change.
 	};
 	
@@ -117,10 +153,15 @@ io.sockets.on('connection', function(socket) {
 	
 	socket.on('disconnect', function() {
 		var i;
-		for(i in clients) {
-			clients[i].disconnect("Scrollback says bye..........");
-			delete clients[i]; // Speed up GC?
-		}
+		console.log(nick,users);
+		var toDisconnect=nick;
+		users[nick].outTimeout=setTimeout(function(){
+			var clients=users[toDisconnect].clients;
+			for(i in clients) {
+				clients[i].disconnect("Scrollback says bye..........");
+				delete clients[i]; // Speed up GC?
+			}
+		},60000);
 	});
 });
 

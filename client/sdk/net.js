@@ -16,8 +16,10 @@ var timeAdjustment = 0;
 
 
 socket.on('connect', function(message) {
+	console.log("connected");
 	if(scrollback.streams && scrollback.streams.length) {
 		for(i=0; i<scrollback.streams.length; i++) {
+			console.log("trying to join things");
 			socket.emit('join', scrollback.streams[i]);
 		}
 	}
@@ -25,12 +27,15 @@ socket.on('connect', function(message) {
 
 socket.on('message', function(message) {
 	var stream;
-
-	//console.log(message);
 	if(message.type == 'join' && message.from == nick) {
+		console.log(message.to);
 		stream = streams[message.to];
-		if(!stream || stream.isReady) return;
+		if(!stream || stream.isReady){
+			console.log("stream either missing or not ready",message.to);
+			return;	
+		} 
 		socket.emit('get', {to: stream.id, until: message.time, since: stream.lastMessageAt, type: 'text'});
+		console.log("calling stream ready");
 		stream.ready();
 		stream.isReady = true;
 	}
@@ -51,5 +56,3 @@ socket.on('nick', function(n) {
 //	console.log("Nick change", n);
 	Stream.updateNicks(n);
 });
-
-
