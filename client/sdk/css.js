@@ -7,7 +7,7 @@ var css = {
 	".scrollback-stream": {
 		"position": "fixed",
 		"width": "480px", "height": "480px", "bottom": "0px",
-		"boxShadow": "0px 0px 8px 2px rgba(0,0,0,0.5)",
+		"boxShadow": "0px 0px 8px 0 rgba(0,0,0,0.5)",
 		"boxSizing": "border-box", "webkitBoxSizing": "border-box",
 		"mozBoxSizing": "border-box", "msBoxSizing": "border-box",
 		"oBoxSizing": "border-box",
@@ -34,8 +34,7 @@ var css = {
 			lineHeight: "48px", paddingLeft: "10px",
 			left: "0px", right: "0px", position: "absolute",
 			fontWeight: "bold",
-			zIndex: 9997,
-			top: "0"
+			zIndex: 9997, top: "0", cursor: "default"
 		},
 			".scrollback-title-text":{
 				fontWeight: "normal"
@@ -53,7 +52,8 @@ var css = {
 				"transition": "all 0.2s ease-out", textIndent: "-32px",
 				"webkitTransition": "all 0.2s ease-out", "mozTransition": "all 0.2s ease-out",
 				"oTransition": "all 0.2s ease-out", "msTransition": "all 0.2s ease-out",
-				"borderLeft": "4px solid transparent", opacity: 1, height: "auto"
+				"borderLeft": "4px solid transparent", opacity: 1, height: "auto",
+				cursor: "default"
 			},
 			".scrollback-message-hidden": {
 				"opacity": 0,

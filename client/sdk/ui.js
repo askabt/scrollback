@@ -56,28 +56,6 @@ function Stream(id) {
 				}
 			}, '_']
 		],
-		["div", {'class': 'scrollback-toolbar'},
-			["div", {
-				'class': 'scrollback-toolbtn scrollback-embed',
-				onclick: function() { self.embed(); }
-			}, 'F'],
-			["div", {
-				'class': 'scrollback-toolbtn scrollback-embed',
-				onclick: function() { self.embed(); }
-			}, 'M'],
-			["div", {
-				'class': 'scrollback-toolbtn scrollback-embed',
-				onclick: function() { self.login(); }
-			}, 'L'],
-			["div", {
-				'class': 'scrollback-toolbtn scrollback-link',
-				onclick: function() { self.embed(); }
-			}, '://'],
-			["div", {
-				'class': 'scrollback-toolbtn scrollback-embed',
-				onclick: function() { self.embed(); }
-			}, '</>']
-		],
 		["div", {'class': 'scrollback-timeline'},
 			["div", {'class': 'scrollback-tread'}],
 			["div", {'class': 'scrollback-thumb'}]
