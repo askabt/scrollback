@@ -18,7 +18,7 @@ var css = {
 		"overflow": "hidden"
 	},
 	".scrollback-stream-hidden": {
-		"height": "40px !important"
+		"height": "50px !important"
 	},
 		".scrollback-stream-hidden .scrollback-hide": { display: "none" },
 		".scrollback-close, .scrollback-hide": {

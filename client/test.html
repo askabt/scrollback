@@ -7,15 +7,20 @@
         <meta name="viewport" content="width=device-width">
 		<link href='http://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css' />
         <link rel="stylesheet" href="style.css">
-		
+		<style>
+			body { background: url('img/logo.png') no-repeat center center; }
+		</style>
 		<meta http-equiv="X-UA-Compatible" content="IE=Edge">
 	</head>
 	
 	<body>
+		
+		<div id='background'></div>
+		
 		<script>
 			window.scrollback = {
 				streams: location.hash.substr(1).split(','),
-				theme: 'dark',
+				theme: 'light',
 				ticker: true
 			};
 			
