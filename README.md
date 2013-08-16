@@ -1,3 +1,6 @@
+# This repo is unmaintained
+Please see http://github.com/scrollback/scrollback instead.
+
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
